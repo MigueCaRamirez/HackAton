@@ -209,9 +209,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 //validaciones del estadisticasorg
 
-document.querySelector('form').addEventListener('submit', function (e) {
-    e.preventDefault();
-    alert('Formulario enviado exitosamente. La organización se pondrá en contacto contigo.');
-    this.reset();
-});
-
+ document.querySelector('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        alert('Formulario enviado exitosamente. La organización se pondrá en contacto contigo.');
+        this.reset();
+    });

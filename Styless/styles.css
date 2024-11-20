@@ -244,3 +244,10 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
+
+
+.blockquote-footer{
+  color: #f8f9fa;
+
+
+}
