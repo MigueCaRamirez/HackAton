@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Estadísticas de Donaciones">
+    <meta name="keywords" content="estadísticas, donaciones, gráfica, pastel">
+    <title>Estadísticas - DonaPro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="Styless/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="Organizaciones.html">Organizaciones</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Estadísticas de Donaciones</h1>
+            <p class="lead">Conoce la distribución del dinero donado entre las organizaciones</p>
+        </div>
+    </header>
+
+    <!-- Gráfica de Donaciones -->
+    <main class="container my-5">
+        <div class="container my-5">
+            <h2 class="text-center mb-4">Distribución de Donaciones</h2>
+            <canvas id="donationsChart" width="400" height="400"></canvas>
+        </div>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Sobre Nosotros</h5>
+                    <p>Conectamos donantes con organizaciones para maximizar el impacto social.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope"></i> miguel.canate.ramirez012@gmail.com</li>
+                        <li><i class="fas fa-phone"></i> +57 324 401 6942</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Cesar, Colombia</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Scripts -->
+    <script src="Scripts/stats.js"></script>
+</body>
+</html>

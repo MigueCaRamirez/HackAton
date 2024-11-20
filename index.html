@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="Styless/styles.css">
+    <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
 </head>
 <body>
     <!-- Navbar -->
@@ -24,8 +25,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#donar">Donar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
                 </ul>
             </div>
+            
         </div>
     </nav>
 
@@ -78,9 +82,10 @@
                             <label for="organization" class="form-label">Organización a Apoyar</label>
                             <select class="form-select" id="organization" required>
                                 <option value="">Selecciona una organización</option>
-                                <option value="org1">Fundación Esperanza</option>
-                                <option value="org2">Ayuda Global</option>
-                                <option value="org3">Red de Solidaridad</option>
+                                <option value="fundacion_esperanza">Fundación Esperanza</option>
+                                <option value="ayuda_global">Ayuda Global</option>
+                                <option value="red_de_solidaridad
+                                ">Red de Solidaridad</option>
                             </select>
                         </div>
 
@@ -99,6 +104,9 @@
 
             <!-- Lista de Donantes -->
             <h3 class="text-center mt-5">Lista de Donantes</h3>
+            <button id="toggleDonorsList" class="btn btn-secondary w-100 mb-4">
+                <i class="fas fa-list"></i> Ver Lista de Donantes
+            </button>
             <button id="toggleDonorsList" class="btn btn-secondary w-100 mb-4">
                 <i class="fas fa-list"></i> Ver Lista de Donantes
             </button>
@@ -136,6 +144,6 @@
 
 
     <!-- Custom Scripts -->
-    <script src="scripts.js"></script>
+    <script src="Scripts/scripts.js"></script>
 </body>
 </html>
