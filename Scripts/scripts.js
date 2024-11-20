@@ -174,3 +174,34 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 })
+
+
+const fieldsets = document.querySelectorAll('.organization-fieldset');
+
+// Añadir evento de clic a cada fieldset
+fieldsets.forEach((fieldset) => {
+    fieldset.addEventListener('click', () => {
+        // Obtener el nombre de la organización desde el legend del fieldset
+        const organizationName = fieldset.querySelector('legend').textContent;
+        
+        // Redirigir a la página principal con el nombre de la organización como parámetro
+        window.location.href = `index.html?organization=${encodeURIComponent(organizationName)}`;
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Obtener parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedOrganization = urlParams.get('organization');
+
+    // Si hay un valor en el parámetro 'organization', seleccionarlo en el campo correspondiente
+    if (selectedOrganization) {
+        const organizationSelect = document.getElementById('organization');
+        Array.from(organizationSelect.options).forEach(option => {
+            if (option.textContent === selectedOrganization) {
+                option.selected = true;
+            }
+        });
+    }
+});
