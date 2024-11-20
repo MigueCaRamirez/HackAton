@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    
     <link rel="stylesheet" href="Styless/styles.css">
     <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
 </head>
@@ -26,8 +25,6 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Donar</a></li>
                     <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
-                    
-                    
                 </ul>
             </div>
         </div>
@@ -43,56 +40,42 @@
 
     <!-- Organizaciones Asociadas -->
     <main class="container my-5">
-        <div class="wrapper">
-        <fieldset class="organization-fieldset" id="fieldset1">
-            <legend>Fundación Esperanza</legend>
-            <img src="Images/esperanza.jpg" alt="Fundación Esperanza" class="organization-image">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex odit, enim ullam facilis eos 
-                asperiores nam! Rerum eos ullam unde soluta id saepe ut perferendis, aperiam voluptatem non fugiat.</p>
-        </fieldset>
-
-        <fieldset class="organization-fieldset" id="fieldset2">
-            <legend>Ayuda Global</legend>
-            <img src="Images/humani.jpg" alt="Ayuda Global" class="organization-image">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex odit, enim ullam facilis eos 
-                asperiores nam! Rerum eos ullam unde soluta id saepe ut perferendis, aperiam voluptatem non fugiat.</p>
-        </fieldset>
-
-        <fieldset class="organization-fieldset" >
-            <legend>Red de Solidaridad</legend>
-            <img src="Images/red.jpg" alt="Red de Solidaridad" class="organization-image">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex odit, enim ullam facilis eos 
-                asperiores nam! Rerum eos ullam unde soluta id saepe ut perferendis, aperiam voluptatem non fugiat.
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat possimus minus esse quod ad expedita facere animi ullam, modi nihil neque vero illo consequatur labore nam quae quas sequi sunt.</p>
-        </fieldset>
-    </div>
+        <div id="organizationWrapper" class="wrapper">
+            <!-- Las organizaciones se cargarán dinámicamente aquí -->
+        </div>
     </main>
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-4">
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Sobre Nosotros</h5>
-                    <p>Conectamos donantes con organizaciones para maximizar el impacto social.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contacto</h5>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-envelope"></i> miguel.canate.ramirez012@gmail.com</li>
-                        <li><i class="fas fa-phone"></i> +57 324 401 6942</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Cesar, Colombia</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
-                </div>
-            </div>
+            <p class="mb-0 text-center">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
         </div>
     </footer>
-    <script src="Scripts/scripts.js"></script>
+
+    <!-- Scripts -->
+    <script>
+        // Función para cargar las organizaciones desde Local Storage
+        function loadOrganizations() {
+            const organizations = JSON.parse(localStorage.getItem("organizations")) || [];
+            const wrapper = document.getElementById("organizationWrapper");
+            wrapper.innerHTML = ""; // Limpiar contenido
+
+            organizations.forEach(org => {
+                const fieldset = document.createElement("fieldset");
+                fieldset.className = "organization-fieldset";
+                fieldset.innerHTML = `
+                    <legend>${org.name}</legend>
+                    <img src="${org.image}" alt="${org.name}" class="organization-image mb-3" style="max-width: 100%; height: auto;">
+                    <p>${org.description}</p>
+                `;
+                wrapper.appendChild(fieldset);
+            });
+        }
+
+        // Inicializar al cargar el DOM
+        document.addEventListener("DOMContentLoaded", () => {
+            loadOrganizations();
+        });
+    </script>
 </body>
 </html>

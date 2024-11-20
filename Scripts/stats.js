@@ -1,14 +1,13 @@
 // Función para calcular las donaciones totales por organización
-function calculateDonationsByOrganization(donors) {
+function calculateDonationsByOrganization(donors, organizations) {
     const donationData = {};
 
     donors.forEach(donor => {
-        // Si la organización ya está en el objeto, acumula el monto
-        if (donationData[donor.organization]) {
-            donationData[donor.organization] += parseFloat(donor.amount);
+        const organization = organizations.find(org => org.id == donor.organization)?.name || donor.organization;
+        if (donationData[organization]) {
+            donationData[organization] += parseFloat(donor.amount);
         } else {
-            // Si no está, inicializa con el monto del donante
-            donationData[donor.organization] = parseFloat(donor.amount);
+            donationData[organization] = parseFloat(donor.amount);
         }
     });
 
@@ -18,17 +17,16 @@ function calculateDonationsByOrganization(donors) {
 // Función para generar la gráfica de pastel
 function generatePieChart(donationData) {
     const ctx = document.getElementById('donationsChart').getContext('2d');
-
-    const labels = Object.keys(donationData); // Organizaciones
-    const data = Object.values(donationData); // Totales por organización
+    const labels = Object.keys(donationData);
+    const data = Object.values(donationData);
 
     new Chart(ctx, {
-        type: 'pie', // Tipo de gráfica
+        type: 'pie',
         data: {
             labels: labels,
             datasets: [{
                 data: data,
-                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8'], // Colores
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8'],
                 hoverOffset: 4
             }]
         },
@@ -36,7 +34,7 @@ function generatePieChart(donationData) {
             responsive: true,
             plugins: {
                 legend: {
-                    position: 'bottom' // Ubicación de la leyenda
+                    position: 'bottom'
                 },
                 tooltip: {
                     callbacks: {
@@ -52,25 +50,17 @@ function generatePieChart(donationData) {
     });
 }
 
-// Función para cargar la lista de donantes desde Local Storage
-function loadDonorsList() {
-    const storedDonors = localStorage.getItem('donorsList');
-    if (storedDonors) {
-        return JSON.parse(storedDonors);
-    }
-    return []; // Si no hay datos, devuelve un arreglo vacío
+// Función para cargar la lista de donantes y organizaciones desde Local Storage
+function loadFromLocalStorage(key) {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : [];
 }
 
-// Esperar a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', function() {
-    // Cargar la lista de donantes desde Local Storage
-    const donorsList = loadDonorsList();
+// Inicializar gráfica al cargar el DOM
+document.addEventListener('DOMContentLoaded', () => {
+    const donorsList = loadFromLocalStorage("donorsList");
+    const organizations = loadFromLocalStorage("organizations");
 
-    // Calcular las donaciones por organización
-    const donationData = calculateDonationsByOrganization(donorsList);
-
-    // Generar la gráfica de pastel
+    const donationData = calculateDonationsByOrganization(donorsList, organizations);
     generatePieChart(donationData);
 });
-
-
