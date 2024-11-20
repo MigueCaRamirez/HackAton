@@ -6,7 +6,7 @@
     <meta name="description" content="Plataforma de conexión entre donantes y organizaciones benéficas para facilitar la ayuda social">
     <meta name="keywords" content="donaciones, ayuda social, organizaciones benéficas, solidaridad">
     <title>DonaPro - Plataforma De Donantes</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon_io/favicon.ico" type="image/x-icon">
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Bootstrap CSS -->
@@ -18,7 +18,7 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+            <a class="navbar-brand" href="#donar"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -44,7 +44,7 @@
     <main class="container py-5">
         
         <!-- Sección de Donación -->
-        <section id="donar" class="mb-5">
+        <section id="donationSection" id="donar" class="mb-5">
             <h2 class="text-center mb-4">Donar Ahora</h2>
             <div class="rowForm">
                 <div class="col-md-8 mx-auto">
@@ -70,7 +70,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="donationAmount" class="form-label">Cantidad a Donar</label>
+                                <label for="donationAmount" class="form-label">Cantidad a Donar (en Dolares)</label>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
                                     <input type="number" class="form-control" id="donationAmount" required>
@@ -101,43 +101,78 @@
                     </form>
                 </div>
             </div>
-
-            <!-- Lista de Donantes -->
-            <h3 class="text-center mt-5">Lista de Donantes</h3>
-            <button id="toggleDonorsList" class="btn btn-secondary w-100 mb-4">
-                <i class="fas fa-list"></i> Ver Lista de Donantes
-            </button>
-            <ul id="donorsList" class="list-group" style="display: none;"></ul>
-
+           <center><button id="toggleAdminLogin" class="btn btn-secondary mt-4">Iniciar Sesión como Administrador</button></center> 
         </section>
+           <section id="adminLoginSection" style="display: none;">
+                <h2 class="text-center mb-4">Inicio de Sesión de Administrador</h2>
+                <div class="row">
+                    <div class="col-md-6 mx-auto">
+                        <form id="adminLoginForm" class="shadow p-4 rounded">
+                            <div class="mb-3">
+                                <label for="adminUsername" class="form-label">Usuario</label>
+                                <input type="text" id="adminUsername" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="adminPassword" class="form-label">Contraseña</label>
+                                <input type="password" id="adminPassword" class="form-control" required>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                                <button type="button" id="cancelLoginButton" class="btn btn-secondary">Cancelar</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+    <!-- Lista de Donantes con Funciones de Administrador -->
+        <section id="adminPanelSection" style="display: none;">
+            <h3 class="text-center mb-4">Gestión de Donantes</h3>
+            <ul id="adminDonorsList" class="list-group"></ul>
+            <button id="logoutAdmin" class="btn btn-secondary mt-4">Cerrar Sesión</button>
+        </section>
+
+        <h3 class="text-center mt-5">Lista de Donantes</h3>
+        <!-- Botón para mostrar/ocultar la lista de donantes -->
+        <button id="toggleDonorsList" class="btn btn-secondary w-100 mb-4">
+            <i class="fas fa-list"></i> Ver Lista de Donantes
+        </button>
+
+        <!-- Lista de Donantes -->
+
+        <ul id="donorsList" class="list-group" style="display: none;"></ul>
+
+                
+
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-light py-4">
-      <div class="container">
-          <div class="row">
-              <div class="col-md-4">
-                  <h5>Sobre Nosotros</h5>
-                  <p>Conectamos donantes con organizaciones para maximizar el impacto social.</p>
-              </div>
-              <div class="col-md-4">
-                  <h5>Contacto</h5>
-                  <ul class="list-unstyled">
-                      <li><i class="fas fa-envelope"></i> miguel.canate.ramirez012@gmail.com</li>
-                      <li><i class="fas fa-phone"></i> +57 324 401 6942</li>
-                      <li><i class="fas fa-map-marker-alt"></i> Cesar, Colombia</li>
-                  </ul>
-              </div>
-          </div>
-          <hr class="my-4">
-          <div class="row">
-              <div class="col-md-6">
-                  <p class="mb-0">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
-              </div>
+        <!-- Footer -->
+        <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Sobre Nosotros</h5>
+                    <p>Conectamos donantes con organizaciones para maximizar el impacto social.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope"></i> miguel.canate.ramirez012@gmail.com</li>
+                        <li><i class="fas fa-phone"></i> +57 324 401 6942</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Cesar, Colombia</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
+                </div>
 
-          </div>
-      </div>
-  </footer>
+            </div>
+        </div>
+    </footer>
 
 
     <!-- Custom Scripts -->

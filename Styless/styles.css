@@ -71,6 +71,10 @@ body {
 
 }
 
+#adminLoginSection .d-flex button {
+  width: 48%;  
+}
+
 .donation-form .btn-primary {
   background-color: #4CAF50;
   border: none;
