@@ -1,76 +1,29 @@
-/* Variables globales */
-:root {
-  --primary-color: #4CAF50;
-  --secondary-color: #2196F3;
-  --accent-color: #FF9800;
-  --text-dark: #333333;
-  --text-light: #ffffff;
-  --background-light: #f5f5f5;
-  --shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
 
 /* Estilos generales */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  color: var(--text-dark);
+  color: #333333;
 }
 
 /* Hero Section */
 .hero-section {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  color: var(--text-light);
+  background: linear-gradient(135deg, #4CAF50, #2196F3);
+  color: #ffffff;
   padding: 4rem 0;
   margin-bottom: 2rem;
 }
 
-.hero-section h1 {
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-/* Stats Container */
-.stats-container {
-  padding: 2rem 0;
-}
-
-/* Stats Container (continuación) */
-.stat-box {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 1.5rem;
-  border-radius: 10px;
-  backdrop-filter: blur(5px);
-  transition: transform 0.3s ease;
-}
-
-.stat-box:hover {
-  transform: translateY(-5px);
-}
-
-.stat-box i {
-  color: var(--accent-color);
-  margin-bottom: 1rem;
-}
-
-.stat-box h3 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
 
 /* Formulario de donación */
 .donation-form {
-  background-color: var(--background-light);
+  background-color: #f5f5f5;
   border-radius: 15px;
-  transition: box-shadow 0.3s ease;
-}
 
-.donation-form:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .donation-form .btn-primary {
-  background-color: var(--primary-color);
+  background-color: #4CAF50;
   border: none;
   padding: 12px 25px;
   font-weight: 600;
@@ -82,48 +35,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* Tarjetas de organizaciones */
-.card {
-  border: none;
-  box-shadow: var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.card-img-top {
-  height: 200px;
-  object-fit: cover;
-}
-
-.progress {
-  height: 10px;
-  border-radius: 5px;
-}
-
-.progress-bar {
-  background-color: var(--primary-color);
-}
-
-/* Sección de impacto */
-.impact-chart {
-  background-color: var(--background-light);
-  padding: 1.5rem;
-  border-radius: 10px;
-  margin-bottom: 1.5rem;
-}
-
-.story-card {
-  background-color: white;
-  transition: transform 0.3s ease;
-}
-
-.story-card:hover {
-  transform: translateX(5px);
-}
 
 /* Footer */
 footer {
@@ -135,57 +46,6 @@ footer a {
   transition: color 0.3s ease;
 }
 
-footer a:hover {
-  color: var(--accent-color) !important;
-}
 
-footer .social-icons a {
-  font-size: 1.2rem;
-  margin-right: 1rem;
-}
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {
-      opacity: 0;
-      transform: translateY(20px);
-  }
-  to {
-      opacity: 1;
-      transform: translateY(0);
-  }
-}
 
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero-section {
-      padding: 2rem 0;
-  }
-
-  .stat-box {
-      margin-bottom: 1.5rem;
-  }
-
-  .card {
-      margin-bottom: 1.5rem;
-  }
-}
-
-/* Utilidades adicionales */
-.shadow-hover {
-  transition: box-shadow 0.3s ease;
-}
-
-.shadow-hover:hover {
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.text-gradient {
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
