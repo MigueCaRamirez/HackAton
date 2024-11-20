@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Estadísticas de Donaciones">
     <meta name="keywords" content="estadísticas, donaciones, gráfica, pastel">
-    <title>Estadísticas - DonaPro</title>
+    <title>Estadísticas</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js -->
-    
     <link rel="stylesheet" href="Styless/styles.css">
-    <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="Images/grafico-de-barras.ico" type="image/x-icon">
 </head>
 <body>
     <!-- Navbar -->
@@ -34,11 +33,10 @@
                 <input class="form-check-input" type="checkbox" id="darkModeSwitch">
                 <label class="form-check-label text-light" for="darkModeSwitch">Modo Oscuro</label>
             </div>
+            
         </div>
-    </div>
-</nav>
+    </nav>
 
-    
 
     <!-- Header -->
     <header class="hero-section text-center py-5">
@@ -129,12 +127,7 @@
     
         // Exportar a CSV
         document.getElementById('exportCSV').addEventListener('click', () => {
-            const data = [
-                ["Donación", "Cantidad"],
-                ["Fundación Esperanza", 5000],
-                ["Ayuda Global", 3000],
-                ["Red de Solidaridad", 2000],
-            ];
+            
     
             let csvContent = "data:text/csv;charset=utf-8,";
             data.forEach(row => {
@@ -153,7 +146,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const donors = [
+        // Recuperar la lista de donantes desde el LocalStorage
+        let donors = JSON.parse(localStorage.getItem('donorsList')) || [
             { name: "Juan Pérez", email: "juan@example.com", amount: 1000 },
             { name: "María López", email: "maria@example.com", amount: 800 },
             { name: "Carlos Gómez", email: "carlos@example.com", amount: 700 },
@@ -161,14 +155,18 @@
             { name: "Luis Martínez", email: "luis@example.com", amount: 500 },
         ];
 
+        // Referencia al cuerpo de la tabla
         const tbody = document.querySelector("#donorsTable tbody");
+
+        // Llenar la tabla con los datos de los donantes
         donors.forEach((donor, index) => {
-            const row = `<tr>
-                <td>${index + 1}</td>
-                <td>${donor.name}</td>
-                <td>${donor.email}</td>
-                <td>$${donor.amount}</td>
-            </tr>`;
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${donor.name}</td>
+                    <td>${donor.email}</td>
+                    <td>$${donor.amount}</td>
+                </tr>`;
             tbody.innerHTML += row;
         });
 
@@ -176,6 +174,9 @@
         $('#donorsTable').DataTable();
     });
 </script>
+
+
+
 
 <script>
     const toggleSwitch = document.getElementById('darkModeSwitch');

@@ -169,8 +169,37 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="main.js"></script>
+        <!-- Scripts -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        <!-- Leaflet JavaScript -->
+    
+    <script>
+        const map = L.map('map').setView([4.570868, -74.297333], 6); // Coordenadas iniciales (Colombia)
+    
+        // Capa del mapa
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+    
+        // Agrega marcadores para las organizaciones
+        const organizations = [
+            { name: "Fundación Esperanza", lat: 4.60971, lng: -74.08175 },
+            { name: "Ayuda Global", lat: 6.2442, lng: -75.5812 },
+            { name: "Red de Solidaridad", lat: 3.43722, lng: -76.5225 }
+        ];
+    
+        organizations.forEach(org => {
+            L.marker([org.lat, org.lng]).addTo(map)
+                .bindPopup(`<strong>${org.name}</strong>`)
+                .openPopup();
+        });
+    </script>
+    
+
+
+
+    <script src="stats.js"></script>
 </body>
 </html>

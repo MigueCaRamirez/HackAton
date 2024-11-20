@@ -1,209 +1,180 @@
-/// Esperar a que el DOM esté completamente cargado
-document.addEventListener('DOMContentLoaded', function() {
-    // Referencias a elementos del DOM
-    const donationForm = document.getElementById('donationForm');
-    const donorName = document.getElementById('donorName');
-    const email = document.getElementById('email');
-    const donationAmount = document.getElementById('donationAmount');
-    const donationType = document.getElementById('donationType');
-    const organizationSelect = document.getElementById('organization');
-    const donorMessage = document.getElementById('message');
-    const donorsListContainer = document.getElementById('donorsList');
-    const toggleDonorsListButton = document.getElementById('toggleDonorsList');
+// Constantes de credenciales de administrador
+const ADMIN_CREDENTIALS = { username: "admin", password: "1234" };
 
-    // Cargar los donantes desde Local Storage
-    let donorsList = loadDonorsList();
+// Diccionario de mapeo para las organizaciones
+const organizationsMap = {
+    org1: "Fundación Esperanza",
+    org2: "Alianza por la Vida",
+    org3: "Ayuda Global",
+};
 
-    // Configuración de cantidades sugeridas por tipo de donación
-    const suggestedAmounts = {
-        monthly: [10, 25, 50, 100],
-        oneTime: [50, 100, 250, 500]
-    };
+// Variables de referencia a los elementos del DOM
+const donationSection = document.getElementById("donationSection");
+const adminLoginSection = document.getElementById("adminLoginSection");
+const adminPanelSection = document.getElementById("adminPanelSection");
+const donationForm = document.getElementById("donationForm");
+const adminLoginForm = document.getElementById("adminLoginForm");
+const adminUsername = document.getElementById("adminUsername");
+const adminPassword = document.getElementById("adminPassword");
+const logoutAdminButton = document.getElementById("logoutAdmin");
+const adminDonorsList = document.getElementById("adminDonorsList");
+const toggleAdminLogin = document.getElementById("toggleAdminLogin");
+const toggleDonorsList = document.getElementById("toggleDonorsList");
+const donorsListContainer = document.getElementById("donorsList");
+const cancelLoginButton = document.getElementById("cancelLoginButton"); // Nuevo botón de cancelación
 
-    // Función para validar el correo electrónico
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+// Cargar donantes desde LocalStorage
+let donorsList = JSON.parse(localStorage.getItem("donorsList")) || [];
 
-    // Función para formatear números como moneda
-    function formatCurrency(amount) {
-        return new Intl.NumberFormat('es-ES', {
-            style: 'currency',
-            currency: 'USD'
-        }).format(amount);
-    }
+// Guardar donantes en LocalStorage
+function saveDonorsList() {
+    localStorage.setItem("donorsList", JSON.stringify(donorsList));
+}
 
-    // Función para mostrar los donantes en la lista
-    function displayDonors() {
-        donorsListContainer.innerHTML = ''; // Limpiar la lista antes de agregar los elementos
-        donorsList.forEach((donor) => {
-            const donorItem = document.createElement('li');
-            donorItem.classList.add('list-group-item');
-            donorItem.innerHTML = `
-                <strong>${donor.name}</strong> donó ${donor.amount} USD a ${donor.organization}.
-                <br> Tipo de donación: ${donor.type}. 
-                <br> Descripción del mensaje: ${donor.message}.
-            `;
-            donorsListContainer.appendChild(donorItem);
-        });
-    }
+// Mostrar donantes en modo público
+function displayDonors() {
+    donorsListContainer.innerHTML = ""; // Limpiar la lista antes de agregar los elementos
+    donorsList.forEach((donor) => {
+        const donorItem = document.createElement("li");
+        donorItem.classList.add("list-group-item");
 
-    // Función para guardar la lista de donantes en Local Storage
-    function saveDonorsList() {
-        localStorage.setItem('donorsList', JSON.stringify(donorsList));
-    }
+        // Reemplazar el valor de organización por su nombre legible
+        const organizationName = organizationsMap[donor.organization] || donor.organization;
 
-    // Función para cargar la lista de donantes desde Local Storage
-    function loadDonorsList() {
-        const storedDonors = localStorage.getItem('donorsList');
-        if (storedDonors) {
-            return JSON.parse(storedDonors);
-        }
-        return []; // Si no hay datos, devuelve un arreglo vacío
-    }
-
-    // Función para mostrar u ocultar la lista de donantes
-    toggleDonorsListButton.addEventListener('click', function() {
-        if (donorsListContainer.style.display === 'none') {
-            donorsListContainer.style.display = 'block';
-            displayDonors(); // Mostrar los donantes cuando se haga clic
-        } else {
-            donorsListContainer.style.display = 'none'; // Ocultar la lista
-        }
-    });
-
-    // Función para mostrar alertas
-    function showAlert(message, type = 'info') {
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-        alertDiv.innerHTML = `
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        donorItem.innerHTML = `
+            <strong>${donor.name}</strong> donó ${donor.amount} USD a ${organizationName}.
+            <br> Mensaje: ${donor.message}.
         `;
-        donationForm.insertAdjacentElement('beforebegin', alertDiv);
-
-        // Auto-cerrar después de 5 segundos
-        setTimeout(() => {
-            alertDiv.remove();
-        }, 5000);
-    }
-
-    // Función para procesar la donación
-    function processDonation(data) {
-        showAlert('¡Gracias por tu donación!', 'success');
-        donationForm.reset();
-
-        // Agregar donante a la lista
-        donorsList.push(data);
-
-        // Guardar la lista de donantes en Local Storage
-        saveDonorsList();
-
-        // Mostrar la lista de donantes
-        displayDonors();
-    }
-
-    // Función para actualizar estadísticas (dummy function for demo)
-    function updateStatistics(amount) {
-        const stats = document.querySelectorAll('.stat-box h3');
-        stats.forEach(stat => {
-            const currentValue = parseInt(stat.textContent.replace(/[^0-9]/g, ''));
-            animateNumber(stat, currentValue, currentValue + 1);
-        });
-    }
-
-    // Función para animar números
-    function animateNumber(element, start, end) {
-        let current = start;
-        const increment = (end - start) / 30;
-        const timer = setInterval(() => {
-            current += increment;
-            element.textContent = Math.floor(current).toLocaleString();
-            if (current >= end) {
-                clearInterval(timer);
-                element.textContent = end.toLocaleString();
-            }
-        }, 50);
-    }
-
-    // Función para actualizar sugerencias de monto según el tipo de donación
-    donationType.addEventListener('change', function() {
-        const amounts = suggestedAmounts[this.value];
-        if (amounts) {
-            const randomAmount = amounts[Math.floor(Math.random() * amounts.length)];
-            donationAmount.placeholder = `Sugerencia: ${formatCurrency(randomAmount)}`;
-        }
+        donorsListContainer.appendChild(donorItem);
     });
+}
 
-    // Manejador de eventos para el formulario de donación
-    donationForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+// Mostrar la lista de donantes en el panel de administración
+function displayAdminDonors() {
+    adminDonorsList.innerHTML = ""; // Limpiar la lista antes de agregar los elementos
+    donorsList.forEach((donor, index) => {
+        const donorItem = document.createElement("li");
+        donorItem.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
 
-        // Recopilar datos del formulario
-        const formData = {
-            name: donorName.value,
-            email: email.value,
-            amount: donationAmount.value,
-            organization: organizationSelect.value,
-            type: donationType.value,
-            message: donorMessage.value
-        };
-
-        // Validar correo electrónico
-        if (!isValidEmail(formData.email)) {
-            showAlert('Por favor, introduce un correo electrónico válido', 'error');
-            return;
-        }
-
-        // Validar monto
-        if (formData.amount <= 0) {
-            showAlert('Por favor, introduce un monto válido', 'error');
-            return;
-        }
-
-        // Procesar la donación
-        processDonation(formData);
-
-        // Actualizar estadísticas (dummy update)
-        updateStatistics(formData.amount);
-    });
-
-    // Inicializar tooltips de Bootstrap
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
-    });
-})
-
-
-const fieldsets = document.querySelectorAll('.organization-fieldset');
-
-// Añadir evento de clic a cada fieldset
-fieldsets.forEach((fieldset) => {
-    fieldset.addEventListener('click', () => {
-        // Obtener el nombre de la organización desde el legend del fieldset
-        const organizationName = fieldset.querySelector('legend').textContent;
+        // Reemplazar el valor de organización por su nombre legible
+        const organizationName = organizationsMap[donor.organization] || donor.organization;
         
-        // Redirigir a la página principal con el nombre de la organización como parámetro
-        window.location.href = `index.html?organization=${encodeURIComponent(organizationName)}`;
+        donorItem.innerHTML = `
+            <span><strong>${donor.name}</strong> donó ${donor.amount} USD a ${organizationName}</span>
+            <div>
+                <button class="btn btn-warning btn-sm me-2" onclick="updateDonor(${index})">Actualizar</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteDonor(${index})">Eliminar</button>
+            </div>
+        `;
+        adminDonorsList.appendChild(donorItem);
     });
+}
+
+// Alternar lista de donantes en público
+toggleDonorsList.addEventListener("click", () => {
+    if (donorsListContainer.style.display === "none") {
+        donorsListContainer.style.display = "block";
+        displayDonors();
+    } else {
+        donorsListContainer.style.display = "none";
+    }
 });
 
+// Manejar el formulario de donación
+donationForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Obtener parámetros de la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedOrganization = urlParams.get('organization');
+    // Recopilar datos del formulario
+    const formData = {
+        name: document.getElementById("donorName").value,
+        email: document.getElementById("email").value,
+        donationType: document.getElementById("donationType").value, // Guardamos el tipo, pero no lo mostramos
+        amount: document.getElementById("donationAmount").value,
+        organization: document.getElementById("organization").value,
+        message: document.getElementById("message").value,
+    };
 
-    // Si hay un valor en el parámetro 'organization', seleccionarlo en el campo correspondiente
-    if (selectedOrganization) {
-        const organizationSelect = document.getElementById('organization');
-        Array.from(organizationSelect.options).forEach(option => {
-            if (option.textContent === selectedOrganization) {
-                option.selected = true;
-            }
-        });
+    // Validar datos
+    if (formData.amount <= 0) {
+        alert("Por favor, ingresa una cantidad válida");
+        return;
     }
+
+    // Agregar donante a la lista
+    donorsList.push(formData);
+    saveDonorsList();
+
+    // Limpiar formulario
+    donationForm.reset();
+    alert("¡Donación registrada con éxito!");
+});
+
+// Mostrar formulario de inicio de sesión
+toggleAdminLogin.addEventListener("click", () => {
+    donationSection.style.display = "none";
+    adminLoginSection.style.display = "block";
+});
+
+// Manejar inicio de sesión de administrador
+adminLoginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const username = adminUsername.value;
+    const password = adminPassword.value;
+
+    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+        adminLoginSection.style.display = "none";
+        adminPanelSection.style.display = "block";
+        displayAdminDonors();
+
+        // Limpiar campos de usuario y contraseña
+        adminUsername.value = "";
+        adminPassword.value = "";
+    } else {
+        alert("Credenciales incorrectas");
+    }
+});
+
+// Botón para cancelar inicio de sesión
+cancelLoginButton.addEventListener("click", () => {
+    // Regresar a la sección de donación
+    donationSection.style.display = "block";
+    adminLoginSection.style.display = "none";
+
+    // Limpiar campos de usuario y contraseña
+    adminUsername.value = "";
+    adminPassword.value = "";
+});
+
+// Actualizar un donante
+function updateDonor(index) {
+    const donor = donorsList[index];
+    const newAmount = prompt("Actualizar cantidad:", donor.amount);
+    if (newAmount !== null && newAmount > 0) {
+        donor.amount = newAmount;
+        saveDonorsList();
+        displayAdminDonors();
+    } else {
+        alert("Cantidad inválida");
+    }
+}
+
+// Eliminar un donante
+function deleteDonor(index) {
+    if (confirm("¿Estás seguro de eliminar este donante?")) {
+        donorsList.splice(index, 1);
+        saveDonorsList();
+        displayAdminDonors();
+    }
+}
+
+// Cerrar sesión de administrador
+logoutAdminButton.addEventListener("click", () => {
+    adminPanelSection.style.display = "none";
+    donationSection.style.display = "block";
+
+    // Limpiar campos de usuario y contraseña al salir
+    adminUsername.value = "";
+    adminPassword.value = "";
 });
 
 
@@ -214,3 +185,72 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('Formulario enviado exitosamente. La organización se pondrá en contacto contigo.');
         this.reset();
     });
+
+
+    //primer fuerte
+
+
+    //segundo fuerte
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializar DataTable
+        const table = $('#donorsTable').DataTable();
+    
+        // Lista de donantes (inicializa desde LocalStorage o vacío)
+        let donorsList = JSON.parse(localStorage.getItem('donorsList')) || [];
+    
+        // Cargar los datos existentes en la tabla al inicio
+        donorsList.forEach((donor, index) => {
+            addRowToTable(donor, index);
+        });
+    
+        // Función para agregar una fila a la tabla
+        function addRowToTable(donor, index) {
+            table.row.add([
+                index + 1,
+                donor.name,
+                donor.email,
+                `$${donor.amount}`,
+                donor.organization,
+                donor.message || "Sin mensaje"
+            ]).draw(false);
+        }
+    
+        // Función para guardar en LocalStorage
+        function saveDonorsList() {
+            localStorage.setItem('donorsList', JSON.stringify(donorsList));
+        }
+    
+        // Manejar el formulario de donación
+        const donationForm = document.getElementById("donationForm");
+        donationForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            // Recopilar datos del formulario
+            const newDonor = {
+                name: document.getElementById("donorName").value,
+                email: document.getElementById("email").value,
+                amount: parseFloat(document.getElementById("donationAmount").value),
+                organization: document.getElementById("organization").value,
+                message: document.getElementById("message").value,
+            };
+    
+            // Validar el monto de donación
+            if (newDonor.amount <= 0) {
+                alert("Por favor, ingresa una cantidad válida.");
+                return;
+            }
+    
+            // Agregar el nuevo donante a la lista
+            donorsList.push(newDonor);
+            saveDonorsList();
+    
+            // Agregar el nuevo donante a la tabla
+            addRowToTable(newDonor, donorsList.length - 1);
+    
+            // Limpiar el formulario y mostrar mensaje de éxito
+            donationForm.reset();
+            alert("¡Donación registrada con éxito!");
+        });
+    });
+    

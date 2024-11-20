@@ -189,7 +189,34 @@ img {
   color: #555;
 }
 
-/* ================== Footer ================== */
+/* Formulario de donación */
+.donation-form {
+  background-color: #f5f5f5;
+  border-radius: 15px;
+
+}
+
+#adminLoginSection .d-flex button {
+  width: 48%;  
+}
+
+.donation-form .btn-primary {
+  background-color: #4CAF50;
+  border: none;
+  padding: 12px 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.donation-form .btn-primary:hover {
+  background-color: darkgreen;
+  transform: translateY(-2px);
+}
+
+
+
+
+/* Footer */
 footer {
   background-color: #1a1a1a;
   color: #ffffff;
