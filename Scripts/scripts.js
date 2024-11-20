@@ -1,4 +1,4 @@
-// Esperar a que el DOM esté completamente cargado
+/// Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
     // Referencias a elementos del DOM
     const donationForm = document.getElementById('donationForm');
@@ -205,3 +205,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+//validaciones del estadisticasorg
+
+document.querySelector('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    alert('Formulario enviado exitosamente. La organización se pondrá en contacto contigo.');
+    this.reset();
+});
+
