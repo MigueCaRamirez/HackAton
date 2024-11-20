@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma De Donantes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+      <h1>Plataforma de Conexión entre Donantes y Organizaciones</h1>
+      <p>Facilitando la ayuda social a través de la tecnología.</p>
+    </header>
+    
+    <main>
+      <section id="donar">
+        <h2>Donar Ahora</h2>
+        <form id="donationForm">
+          <label for="donorName">Nombre del Donante:</label>
+          <input type="text" id="donorName" placeholder="Tu nombre" required>
+  
+          <label for="email">Correo Electrónico:</label>
+          <input type="email" id="email" placeholder="Tu correo" required>
+  
+          <label for="donationAmount">Cantidad a Donar:</label>
+          <input type="number" id="donationAmount" placeholder="Monto en USD" required>
+  
+          <label for="organization">Organización a Apoyar:</label>
+          <select id="organization" required>
+            <option value="">Selecciona una organización</option>
+            <option value="org1">Fundación Esperanza</option>
+            <option value="org2">Ayuda Global</option>
+            <option value="org3">Red de Solidaridad</option>
+          </select>
+  
+          <button type="submit">Donar</button>
+        </form>
+      </section>
+  
+      <section id="organizaciones">
+        <h2>Organizaciones Registradas</h2>
+        <ul id="organizationList">
+          <li><strong>Fundación Esperanza:</strong> Proporciona alimentos y ropa a comunidades vulnerables.</li>
+          <li><strong>Ayuda Global:</strong> Brinda atención médica en zonas rurales.</li>
+          <li><strong>Red de Solidaridad:</strong> Promueve la educación para niños en situación de riesgo.</li>
+        </ul>
+      </section>
+    </main>
+  
+    <footer>
+      <p>&copy; 2024 Plataforma de Conexión Social. Todos los derechos reservados.</p>
+    </footer>
+  
+    <script src="scripts.js"></script>
+  </body>
+</html>
