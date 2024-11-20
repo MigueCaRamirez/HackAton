@@ -26,7 +26,9 @@ document.addEventListener('DOMContentLoaded', function () {
             donor.email,
             `$${donor.amount}`,
             donor.organization,
-            donor.message || "Sin mensaje"
+            donor.message || "Sin mensaje",
+            `<button class="btn btn-warning btn-sm" onclick="updateDonor(${index})">Actualizar</button>
+             <button class="btn btn-danger btn-sm" onclick="deleteDonor(${index})">Eliminar</button>`
         ]).draw(false);
     }
 
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Manejar el formulario de donación
     const donationForm = document.getElementById("donationForm");
-    donationForm.addEventListener('submit', function (e) {
+    donationForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         // Recopilar datos del formulario
@@ -53,17 +55,59 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Agregar el nuevo donante a la lista
-        donorsList.push(newDonor);
-        saveDonorsList();
+        try {
+            // Enviar correo al backend
+            const response = await fetch('http://localhost:5000/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newDonor),
+            });
 
-        // Agregar el nuevo donante a la tabla
-        addRowToTable(newDonor, donorsList.length - 1);
+            const result = await response.json();
+            if (!response.ok) {
+                alert('Error al enviar el correo: ' + result.error);
+                return;
+            }
 
-        // Limpiar el formulario y mostrar mensaje de éxito
-        donationForm.reset();
-        alert("¡Donación registrada con éxito!");
+            // Agregar el nuevo donante a la lista
+            donorsList.push(newDonor);
+            saveDonorsList();
+
+            // Agregar el nuevo donante a la tabla
+            addRowToTable(newDonor, donorsList.length - 1);
+
+            // Limpiar el formulario y mostrar mensaje de éxito
+            donationForm.reset();
+            alert("¡Donación registrada con éxito! Revisa tu correo.");
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Ocurrió un error al enviar tu donación.');
+        }
     });
+
+    // Actualizar un donante
+    window.updateDonor = function (index) {
+        const donor = donorsList[index];
+        const newAmount = prompt("Actualizar cantidad:", donor.amount);
+        if (newAmount !== null && newAmount > 0) {
+            donor.amount = parseFloat(newAmount);
+            saveDonorsList();
+            loadTableData();
+        } else {
+            alert("Cantidad inválida");
+        }
+    };
+
+    // Eliminar un donante
+    window.deleteDonor = function (index) {
+        if (confirm("¿Estás seguro de eliminar este donante?")) {
+            donorsList.splice(index, 1);
+            saveDonorsList();
+            loadTableData();
+        }
+    };
 
     // Mostrar formulario de inicio de sesión (si aplica en tu proyecto)
     const toggleAdminLogin = document.getElementById("toggleAdminLogin");
