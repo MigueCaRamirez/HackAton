@@ -7,6 +7,7 @@
     <meta name="keywords" content="estadísticas, donaciones, gráfica, pastel">
     <title>Estadísticas</title>
     <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Chart.js -->
@@ -15,21 +16,27 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Donar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
-                    
-                </ul>
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Donar</a></li>
+                <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
+            </ul>
+            <!-- Interruptor de Modo Oscuro -->
+            <div class="form-check form-switch ms-3">
+                <input class="form-check-input" type="checkbox" id="darkModeSwitch">
+                <label class="form-check-label text-light" for="darkModeSwitch">Modo Oscuro</label>
             </div>
+            
         </div>
     </nav>
+
 
     <!-- Header -->
     <header class="hero-section text-center py-5">
@@ -45,6 +52,32 @@
             <h2 class="text-center mb-4">Distribución de Donaciones</h2>
             <canvas id="donationsChart" width="400" height="400"></canvas>
         </div>
+
+        <div class="text-center my-4">
+            <button id="exportPDF" class="btn btn-primary">Exportar a PDF</button>
+            <button id="exportCSV" class="btn btn-secondary">Exportar a CSV</button>
+        </div>
+        
+        <section id="topDonantes" class="my-5">
+            <h2 class="text-center mb-4">Top Donantes</h2>
+            <div class="table-responsive">
+                <table id="donorsTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Cantidad Donada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos serán llenados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        
         
     </main>
 
@@ -75,7 +108,94 @@
     </footer>
 
     <!-- Custom Scripts -->
+    <script>
+        // Exportar a PDF
+        document.getElementById('exportPDF').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+    
+            doc.text("Estadísticas de Donaciones", 10, 10);
+            doc.text("Distribución de Donaciones", 10, 20);
+    
+            // Capturar el gráfico como imagen
+            const canvas = document.getElementById('donationsChart');
+            const imageData = canvas.toDataURL('image/png');
+            doc.addImage(imageData, 'PNG', 10, 30, 180, 100);
+    
+            doc.save('estadisticas.pdf');
+        });
+    
+        // Exportar a CSV
+        document.getElementById('exportCSV').addEventListener('click', () => {
+            const data = [
+                ["Donación", "Cantidad"],
+                ["Fundación Esperanza", 5000],
+                ["Ayuda Global", 3000],
+                ["Red de Solidaridad", 2000],
+            ];
+    
+            let csvContent = "data:text/csv;charset=utf-8,";
+            data.forEach(row => {
+                csvContent += row.join(",") + "\n";
+            });
+    
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "estadisticas.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const donors = [
+            { name: "Juan Pérez", email: "juan@example.com", amount: 1000 },
+            { name: "María López", email: "maria@example.com", amount: 800 },
+            { name: "Carlos Gómez", email: "carlos@example.com", amount: 700 },
+            { name: "Ana Torres", email: "ana@example.com", amount: 600 },
+            { name: "Luis Martínez", email: "luis@example.com", amount: 500 },
+        ];
+
+        const tbody = document.querySelector("#donorsTable tbody");
+        donors.forEach((donor, index) => {
+            const row = `<tr>
+                <td>${index + 1}</td>
+                <td>${donor.name}</td>
+                <td>${donor.email}</td>
+                <td>$${donor.amount}</td>
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+
+        // Inicializar DataTable
+        $('#donorsTable').DataTable();
+    });
+</script>
+
+<script>
+    const toggleSwitch = document.getElementById('darkModeSwitch');
+    toggleSwitch.addEventListener('change', function () {
+        if (this.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    });
+</script>
+
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+ 
     <script src="Scripts/stats.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+   
+   
+   
 </body>
 </html>

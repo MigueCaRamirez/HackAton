@@ -1,5 +1,20 @@
+<<<<<<< HEAD
 // Constantes de credenciales de administrador
 const ADMIN_CREDENTIALS = { username: "admin", password: "1234" };
+=======
+/// Esperar a que el DOM esté completamente cargado
+document.addEventListener('DOMContentLoaded', function() {
+    // Referencias a elementos del DOM
+    const donationForm = document.getElementById('donationForm');
+    const donorName = document.getElementById('donorName');
+    const email = document.getElementById('email');
+    const donationAmount = document.getElementById('donationAmount');
+    const donationType = document.getElementById('donationType');
+    const organizationSelect = document.getElementById('organization');
+    const donorMessage = document.getElementById('message');
+    const donorsListContainer = document.getElementById('donorsList');
+    const toggleDonorsListButton = document.getElementById('toggleDonorsList');
+>>>>>>> f6c73a1c37b033038e7b2f2eee0651a73fc8d050
 
 // Diccionario de mapeo para las organizaciones
 const organizationsMap = {
@@ -176,3 +191,13 @@ logoutAdminButton.addEventListener("click", () => {
     adminUsername.value = "";
     adminPassword.value = "";
 });
+
+
+//validaciones del estadisticasorg
+
+document.querySelector('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    alert('Formulario enviado exitosamente. La organización se pondrá en contacto contigo.');
+    this.reset();
+});
+
