@@ -81,7 +81,7 @@ toggleDonorsList.addEventListener("click", () => {
 });
 
 // Manejar el formulario de donación
-donationForm.addEventListener("submit", (e) => {
+donationForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     // Recopilar datos del formulario
@@ -100,13 +100,33 @@ donationForm.addEventListener("submit", (e) => {
         return;
     }
 
-    // Agregar donante a la lista
-    donorsList.push(formData);
-    saveDonorsList();
+    try {
+        // Enviar los datos al backend
+        const response = await fetch('http://localhost:5000/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
 
-    // Limpiar formulario
-    donationForm.reset();
-    alert("¡Donación registrada con éxito!");
+        const result = await response.json();
+
+        if (response.ok) {
+            // Agregar donante a la lista
+            donorsList.push(formData);
+            saveDonorsList();
+
+            // Limpiar formulario
+            donationForm.reset();
+            alert("¡Donación registrada con éxito! Revisa tu correo.");
+        } else {
+            alert('Error al procesar la donación: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Ocurrió un error al enviar tu donación.');
+    }
 });
 
 // Mostrar formulario de inicio de sesión
@@ -177,12 +197,11 @@ logoutAdminButton.addEventListener("click", () => {
     adminPassword.value = "";
 });
 
-
-//validaciones del estadisticasorg
-
+// Validaciones de estadísticas de organizaciones
 document.querySelector('form').addEventListener('submit', function (e) {
     e.preventDefault();
     alert('Formulario enviado exitosamente. La organización se pondrá en contacto contigo.');
     this.reset();
 });
+
 
