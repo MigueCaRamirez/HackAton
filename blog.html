@@ -61,17 +61,39 @@
             <p class="mb-0 text-center">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
         </div>
     </footer>
-
-    <!-- Scripts -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Función para renderizar los comentarios desde LocalStorage
+            const renderComments = () => {
+                const commentsList = document.getElementById('commentsList');
+                commentsList.innerHTML = ''; // Limpia los comentarios actuales
+    
+                const comments = JSON.parse(localStorage.getItem('comments')) || []; // Recupera los comentarios
+                comments.forEach(comment => {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.classList.add('comment');
+                    commentDiv.innerHTML = `
+                        <div class="comment-avatar">${comment.author.charAt(0)}</div>
+                        <div class="comment-content">
+                            <h4>${comment.author}</h4>
+                            <p>${comment.text}</p>
+                            <div class="comment-time">Publicado el ${comment.date}</div>
+                        </div>
+                    `;
+                    commentsList.appendChild(commentDiv);
+                });
+            };
+    
+            // Renderizar los comentarios al cargar la página
+            renderComments();
+    
             // Simulación de artículos de blog
             const posts = [
                 { title: "Impacto en la comunidad", content: "Conoce cómo tus donaciones han cambiado vidas.", date: "2024-11-01" },
                 { title: "Caso de Éxito: Fundación Esperanza", content: "Descubre cómo apoyamos a más de 500 familias.", date: "2024-10-25" },
                 { title: "Nuevos proyectos solidarios", content: "Estamos lanzando proyectos en colaboración con Ayuda Global.", date: "2024-10-15" }
             ];
-
+    
             const blogContainer = document.getElementById('blogPosts');
             posts.forEach(post => {
                 const card = document.createElement('div');
@@ -87,52 +109,32 @@
                 `;
                 blogContainer.appendChild(card);
             });
-
-            // Simulación de comentarios
-            const comments = [
-                { author: "Juan Pérez", text: "Gracias a esta plataforma, he podido ayudar a muchas personas. ¡Increíble trabajo!", date: "2024-11-20" },
-                { author: "Ana Torres", text: "Es maravilloso ver cómo las donaciones marcan una diferencia real.", date: "2024-11-18" }
-            ];
-
-            const commentsList = document.getElementById('commentsList');
-            comments.forEach(comment => {
-                const commentDiv = document.createElement('div');
-                commentDiv.classList.add('comment');
-                commentDiv.innerHTML = `
-                    <div class="comment-avatar">${comment.author.charAt(0)}</div>
-                    <div class="comment-content">
-                        <h4>${comment.author}</h4>
-                        <p>${comment.text}</p>
-                        <div class="comment-time">Publicado el ${comment.date}</div>
-                    </div>
-                `;
-                commentsList.appendChild(commentDiv);
-            });
-
+    
             // Manejo del formulario de comentarios
             document.getElementById('commentForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-
+    
                 const author = document.getElementById('commentAuthor').value;
                 const text = document.getElementById('commentText').value;
                 const date = new Date().toISOString().split('T')[0];
-
-                const newComment = document.createElement('div');
-                newComment.classList.add('comment');
-                newComment.innerHTML = `
-                    <div class="comment-avatar">${author.charAt(0)}</div>
-                    <div class="comment-content">
-                        <h4>${author}</h4>
-                        <p>${text}</p>
-                        <div class="comment-time">Publicado el ${date}</div>
-                    </div>
-                `;
-                commentsList.appendChild(newComment);
-
+    
+                // Crear nuevo comentario
+                const newComment = { author, text, date };
+    
+                // Guardar en LocalStorage
+                const comments = JSON.parse(localStorage.getItem('comments')) || [];
+                comments.push(newComment);
+                localStorage.setItem('comments', JSON.stringify(comments));
+    
+                // Renderizar nuevamente los comentarios
+                renderComments();
+    
                 // Limpiar formulario
                 document.getElementById('commentForm').reset();
             });
         });
     </script>
+    
+    
 </body>
 </html>
