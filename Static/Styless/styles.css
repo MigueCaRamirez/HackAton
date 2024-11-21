@@ -2,16 +2,51 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  color: #333333;
-  background-color: #f8edeb;
+  color: var(--text-color, #333333);
+  background-color: var(--bg-color, #f8f9fa);
+  margin: 0;
+  padding: 0;
+  font-size: 1rem; /* Base para ajustar según la pantalla */
+}
+
+h1, h2, h3 {
+  font-weight: bold;
+  color: var(--text-color, #333333);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem); /* Escala según el tamaño de pantalla */
+}
+
+h2 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+}
+
+p, a, li, span {
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+}
+
+a {
+  color: var(--primary-color, #007bff);
+  transition: color 0.3s ease;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0056b3;
 }
 
 /* ================== Hero Section ================== */
 .hero-section {
   position: relative;
-  background: linear-gradient(135deg, #4CAF50, #2196F3);
+  background: linear-gradient(135deg, #4CAF50, #007BFF);
   color: #ffffff;
-  padding: 6rem 0;
+  padding: clamp(4rem, 10vw, 6rem) 0;
   text-align: center;
   overflow: hidden;
 }
@@ -27,7 +62,7 @@ body {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  opacity: 0.3;
+  opacity: 0.4;
   z-index: 1;
 }
 
@@ -36,67 +71,122 @@ body {
   z-index: 2;
 }
 
-/* ================== Estilos Fieldset ================== */
-.organization-fieldset {
-  border: 2px solid #007bff;
+/* ================== Botones ================== */
+button, .btn {
+  border: none;
   border-radius: 8px;
-  padding: 15px;
+  padding: clamp(10px, 2vw, 15px) 20px;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover, .btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #388E3C;
+}
+
+.btn-secondary {
+  background-color: #007BFF;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #0056b3;
+}
+
+/* ================== Fieldset ================== */
+.organization-fieldset {
+  border: 2px solid var(--primary-color, #007bff);
+  border-radius: 8px;
+  padding: clamp(15px, 4vw, 25px);
   margin-bottom: 20px;
-  background-color: #f9f9f9;
-  transition: transform 0.3s ease;
-}
-
-.organization-fieldset legend {
-  font-size: 1.5rem;
-  color: #007bff;
-  padding: 0 10px;
-}
-
-.organization-fieldset p {
-  font-size: 1rem;
-  color: #555;
-  line-height: 1.6;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .organization-fieldset:hover {
   transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Imágenes dentro de los fieldsets */
+.organization-fieldset legend {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: var(--primary-color, #007bff);
+  padding: 0 10px;
+}
+
+.organization-fieldset p {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: #555;
+  line-height: 1.6;
+}
 .organization-image {
-  width: 40%;
-  display: block;
+  width: 100%; /* Se ajusta al ancho del contenedor */
+  max-width: 600px; /* Limita el tamaño máximo de la imagen */
   height: auto;
-  margin: auto;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ================== Formulario de Donación ================== */
-.donation-form {
-  background-color: #f8f9fa;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
-  transition: transform 0.3s ease;
+.organization-image:hover {
+  transform: scale(1.05); /* Agrega un efecto visual al pasar el cursor */
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
-.donation-form:hover {
-  transform: translateY(-5px);
+/* ================== Galería ================== */
+img {
+  max-width: 100%; /* Asegura que las imágenes no excedan el ancho del contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
+  display: block; /* Evita espacios no deseados debajo de la imagen */
+  margin: auto; /* Centra las imágenes dentro de su contenedor */
+}
+#galeria img {
+  width: 100%;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.donation-form .btn-primary {
-  background-color: #4CAF50;
+#galeria img:hover {
+  transform: scale(1.07);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ================== Estadísticas ================== */
+#impacto .card {
   border: none;
-  padding: 12px 25px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  letter-spacing: 0.5px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.donation-form .btn-primary:hover {
-  background-color: #45a049;
-  transform: scale(1.05);
+#impacto .card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+#impacto h3 {
+  color: #4CAF50;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: bold;
+}
+
+#impacto p {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: #555;
 }
 
 /* Formulario de donación */
@@ -147,24 +237,251 @@ canvas#donationsChart {
 /* Footer */
 footer {
   background-color: #1a1a1a;
+  color: #ffffff;
+  padding: 2rem 0;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+footer h5 {
+  font-weight: bold;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
 }
 
 footer a {
-  text-decoration: none;
+  color: #4CAF50;
   transition: color 0.3s ease;
 }
 
-/* ================== Responsive Adjustments ================== */
+footer a:hover {
+  color: #81C784;
+}
+
+/* ================== Map ================== */
+#map {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ================== Responsive Ajustado ================== */
 @media (max-width: 768px) {
   .hero-section {
     padding: 4rem 0;
   }
 
-  .hero-section h1 {
-    font-size: 2rem;
+  #galeria img {
+    margin-bottom: 20px;
   }
+}
 
-  .hero-section p {
-    font-size: 1rem;
-  }
+:root {
+  --bg-color: #ffffff;
+  --text-color: #333333;
+  --primary-color: #007bff;
+}
+
+[data-theme="dark"] {
+  --bg-color: #333333;
+  --text-color: #ffffff;
+  --primary-color: #4caf50;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+
+.blockquote-footer{
+  color: #f8f9fa;
+
+
+}
+
+/* ================== Fondo General ================== */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  background: linear-gradient(135deg, #f8fbff, #d6e4ff);
+  color: #333333;
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  overflow-x: hidden;
+}
+
+/* ================== Estilo de las Páginas de Inicio de Sesión y Registro ================== */
+.login-page, .register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e3ffe7, #d9e7ff);
+}
+
+.login-page .form-container, .register-page .form-container {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: #333333;
+  width: 100%;
+  max-width: 450px;
+}
+
+.login-page h1, .register-page h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #4CAF50;
+}
+
+.login-page input, .register-page input {
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.login-page input:focus, .register-page input:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+}
+
+.login-page button, .register-page button {
+  background: #4CAF50;
+  color: #ffffff;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 15px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.login-page button:hover, .register-page button:hover {
+  background: #388E3C;
+  transform: translateY(-2px);
+}
+
+.login-page .text-center a, .register-page .text-center a {
+  color: #007BFF;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.login-page .text-center a:hover, .register-page .text-center a:hover {
+  color: #0056b3;
+}
+
+/* ================== Estilo del Blog ================== */
+.blog-page {
+  background: linear-gradient(135deg, #ffffff, #eef2f7);
+  padding: 2rem 0;
+  color: #333333;
+}
+
+.blog-page h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.blog-page .card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #ffffff;
+}
+
+.blog-page .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.blog-page .card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #388E3C;
+}
+
+.blog-page .card-text {
+  color: #666666;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.blog-page .card small {
+  font-size: 0.9rem;
+  color: #999999;
+}
+
+/* ================== Estilo de Comentarios ================== */
+.comments-section {
+  margin-top: 2rem;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.comments-section h3 {
+  font-size: 1.8rem;
+  color: #388E3C;
+  margin-bottom: 1rem;
+}
+
+.comment {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eeeeee;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+
+.comment-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #4CAF50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+.comment-content {
+  flex-grow: 1;
+}
+
+.comment-content h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #4CAF50;
+}
+
+.comment-content p {
+  margin: 0.2rem 0;
+  color: #666666;
+  font-size: 0.95rem;
+}
+
+.comment-time {
+  font-size: 0.8rem;
+  color: #999999;
+  text-align: right;
 }

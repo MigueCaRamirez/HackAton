@@ -6,12 +6,14 @@
     <meta name="description" content="Plataforma de conexión entre donantes y organizaciones benéficas para facilitar la ayuda social">
     <meta name="keywords" content="donaciones, ayuda social, organizaciones benéficas, solidaridad">
     <title>DonaPro - Plataforma De Donantes</title>
-    <link rel="icon" href="Static/Images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styless/styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='Images/favicon.ico') }}" type="image/x-icon">
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Static/Styless/styles.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+</head>
 </head>
 <body>
     <!-- Navbar -->
@@ -27,7 +29,8 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#donar">Donar</a></li>
                     <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones Asociadas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">ingresar</a></li> 
                 </ul>
             </div>
         </div>
@@ -118,6 +121,7 @@
             <button id="logoutAdmin" class="btn btn-secondary mt-4">Cerrar Sesión</button>
         </section>
     </main>
+ 
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-4">
@@ -126,7 +130,16 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="Static/Scripts/scripts.js"></script>
+
+    <body>
+        ...
+        <!-- DataTables y jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    
+        <!-- Tu script personalizado -->
+        <script src="Static/Scripts/scripts.js"></script>
+    </body>
+    
 </body>
 </html>

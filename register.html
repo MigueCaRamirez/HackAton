@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Regístrate en Donando Vida">
+    <meta name="keywords" content="registro, donaciones, usuario">
+    <title>Registro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Styless/styles.css">
+    <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#donar"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#donar">Donar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">ingresar</a></li> 
+                </ul>
+            </div>
+            
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <main class="container my-5">
+        <h1 class="text-center mb-4">Registro</h1>
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <form id="registerForm" class="shadow p-4 rounded">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre Completo</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                </form>
+                <p class="text-center mt-3">
+                    ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+                </p>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            users.push({ name, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+
+            alert('Registro exitoso');
+            window.location.href = 'login.html';
+        });
+    </script>
+</body>
+</html>

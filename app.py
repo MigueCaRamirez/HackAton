@@ -86,3 +86,6 @@ def upload_image():
 @app.route('/organizations')
 def organizations():
     return render_template('Estaticadeorganizaciones.html')
+if __name__ == "__main__":
+    app.run(debug=True)
+
