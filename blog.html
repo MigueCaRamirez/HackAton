@@ -29,11 +29,30 @@
     </nav>
 
     <!-- Blog Section -->
-    <main class="container my-5">
+    <main class="container my-5 blog-page">
         <h1 class="text-center mb-4">Blog de Impacto Social</h1>
         <div id="blogPosts" class="row g-4">
             <!-- Los artículos se cargarán dinámicamente -->
         </div>
+
+        <!-- Comments Section -->
+        <section class="comments-section">
+            <h3>Comentarios</h3>
+            <div id="commentsList">
+                <!-- Los comentarios se cargarán dinámicamente -->
+            </div>
+            <form id="commentForm" class="mt-4">
+                <div class="mb-3">
+                    <label for="commentAuthor" class="form-label">Nombre</label>
+                    <input type="text" id="commentAuthor" class="form-control" placeholder="Tu nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="commentText" class="form-label">Comentario</label>
+                    <textarea id="commentText" class="form-control" rows="3" placeholder="Escribe tu comentario aquí..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar Comentario</button>
+            </form>
+        </section>
     </main>
 
     <!-- Footer -->
@@ -43,8 +62,9 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Simulación de artículos de blog
             const posts = [
                 { title: "Impacto en la comunidad", content: "Conoce cómo tus donaciones han cambiado vidas.", date: "2024-11-01" },
@@ -66,6 +86,51 @@
                     </div>
                 `;
                 blogContainer.appendChild(card);
+            });
+
+            // Simulación de comentarios
+            const comments = [
+                { author: "Juan Pérez", text: "Gracias a esta plataforma, he podido ayudar a muchas personas. ¡Increíble trabajo!", date: "2024-11-20" },
+                { author: "Ana Torres", text: "Es maravilloso ver cómo las donaciones marcan una diferencia real.", date: "2024-11-18" }
+            ];
+
+            const commentsList = document.getElementById('commentsList');
+            comments.forEach(comment => {
+                const commentDiv = document.createElement('div');
+                commentDiv.classList.add('comment');
+                commentDiv.innerHTML = `
+                    <div class="comment-avatar">${comment.author.charAt(0)}</div>
+                    <div class="comment-content">
+                        <h4>${comment.author}</h4>
+                        <p>${comment.text}</p>
+                        <div class="comment-time">Publicado el ${comment.date}</div>
+                    </div>
+                `;
+                commentsList.appendChild(commentDiv);
+            });
+
+            // Manejo del formulario de comentarios
+            document.getElementById('commentForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const author = document.getElementById('commentAuthor').value;
+                const text = document.getElementById('commentText').value;
+                const date = new Date().toISOString().split('T')[0];
+
+                const newComment = document.createElement('div');
+                newComment.classList.add('comment');
+                newComment.innerHTML = `
+                    <div class="comment-avatar">${author.charAt(0)}</div>
+                    <div class="comment-content">
+                        <h4>${author}</h4>
+                        <p>${text}</p>
+                        <div class="comment-time">Publicado el ${date}</div>
+                    </div>
+                `;
+                commentsList.appendChild(newComment);
+
+                // Limpiar formulario
+                document.getElementById('commentForm').reset();
             });
         });
     </script>
