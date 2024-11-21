@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Blog de Impacto Social">
+    <meta name="keywords" content="impacto social, historias, casos de éxito">
+    <title>Blog de Impacto Social</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Styless/styles.css">
+    <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Blog Section -->
+    <main class="container my-5">
+        <h1 class="text-center mb-4">Blog de Impacto Social</h1>
+        <div id="blogPosts" class="row g-4">
+            <!-- Los artículos se cargarán dinámicamente -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <p class="mb-0 text-center">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Simulación de artículos de blog
+            const posts = [
+                { title: "Impacto en la comunidad", content: "Conoce cómo tus donaciones han cambiado vidas.", date: "2024-11-01" },
+                { title: "Caso de Éxito: Fundación Esperanza", content: "Descubre cómo apoyamos a más de 500 familias.", date: "2024-10-25" },
+                { title: "Nuevos proyectos solidarios", content: "Estamos lanzando proyectos en colaboración con Ayuda Global.", date: "2024-10-15" }
+            ];
+
+            const blogContainer = document.getElementById('blogPosts');
+            posts.forEach(post => {
+                const card = document.createElement('div');
+                card.classList.add('col-md-4');
+                card.innerHTML = `
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">${post.title}</h5>
+                            <p class="card-text">${post.content}</p>
+                            <small class="text-muted">${post.date}</small>
+                        </div>
+                    </div>
+                `;
+                blogContainer.appendChild(card);
+            });
+        });
+    </script>
+</body>
+</html>

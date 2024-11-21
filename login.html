@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inicia sesión en Donando Vida">
+    <meta name="keywords" content="inicio de sesión, registro, donaciones">
+    <title>Inicio de Sesión</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="Styless/styles.css">
+    <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#donar"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#donar">Donar</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">ingresar</a></li> 
+                </ul>
+            </div>
+            
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <main class="container my-5">
+        <h1 class="text-center mb-4">Inicio de Sesión</h1>
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <form id="loginForm" class="shadow p-4 rounded">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+                </form>
+                <p class="text-center mt-3">
+                    ¿No tienes cuenta? <a href="register.html">Regístrate</a>
+                </p>
+            </div>
+        </div>
+    </main>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Verifica las credenciales simuladas
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(user => user.email === email && user.password === password);
+
+            if (user) {
+                alert('Inicio de sesión exitoso');
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = 'blog.html';
+            } else {
+                alert('Credenciales incorrectas');
+            }
+        });
+    </script>
+</body>
+</html>
