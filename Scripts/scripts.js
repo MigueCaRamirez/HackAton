@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Inicializar DataTable
-    //NO TOCAR
     const table = $('#donorsTable').DataTable();
 
     // Lista de donantes (inicializa desde LocalStorage o vacío)
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         donorsList.forEach((donor, index) => {
             addRowToTable(donor, index);
         });
-    }
+    };
 
     const organizationsMap = {
         org1: "Fundación Esperanza",
@@ -34,8 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
             `$${donor.amount}`,
             donor.organization,
             donor.message || "Sin mensaje",
-            `<button class="btn btn-warning btn-sm" onclick="updateDonor(${index})">Actualizar</button>
-             <button class="btn btn-danger btn-sm" onclick="deleteDonor(${index})">Eliminar</button>`
+            `
+            <button class="btn btn-warning btn-sm" onclick="updateDonor(${index})">Actualizar</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteDonor(${index})">Eliminar</button>
+            `,
         ]).draw(false);
     }
 
@@ -88,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function () {
     donationForm.addEventListener('submit', async function (e) {
         e.preventDefault();
 
-        // Recopilar datos del formulario
         const newDonor = {
             name: document.getElementById("donorName").value,
             email: document.getElementById("email").value,
@@ -97,19 +97,15 @@ document.addEventListener('DOMContentLoaded', function () {
             message: document.getElementById("message").value,
         };
 
-        // Validar el monto de donación
         if (newDonor.amount <= 0) {
             alert("Por favor, ingresa una cantidad válida.");
             return;
         }
 
         try {
-            // Enviar correo al backend (si es necesario)
             const response = await fetch('http://localhost:5000/send-email', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newDonor),
             });
 
@@ -119,14 +115,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Agregar el nuevo donante a la lista
             donorsList.push(newDonor);
             saveDonorsList();
 
             // Agregar el nuevo donante a la tabla
             addRowToTable(newDonor, donorsList.length - 1);
-
-            // Limpiar el formulario y mostrar mensaje de éxito
             donationForm.reset();
             alert("¡Donación registrada con éxito! Revisa tu correo.");
         } catch (error) {
@@ -236,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
             "Ayuda Global": 7500
         };
 
-        const defaultGoal = 100000; // Meta predeterminada para organizaciones no definidas
+        let defaultGoal = 100000; // Meta predeterminada para organizaciones no definidas
 
         for (const organization in donationData) {
             const totalDonated = donationData[organization];

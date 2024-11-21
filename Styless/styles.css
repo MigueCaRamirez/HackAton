@@ -232,6 +232,77 @@ img {
   transform: translateY(-2px);
 }
 
+#updateGoalPanel {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin: 30px auto;
+  width: 80%;
+  max-width: 900px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+#updateGoalPanel h3 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+#updateGoalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#updateGoalForm label {
+  font-size: 16px;
+  color: #555;
+}
+
+#updateGoalForm select, 
+#updateGoalForm input, 
+#updateGoalForm button {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+#updateGoalForm select:focus, 
+#updateGoalForm input:focus, 
+#updateGoalForm button:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+#updateGoalForm input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
+#updateGoalForm input[type="number"]::-webkit-outer-spin-button,
+#updateGoalForm input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#updateGoalForm button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#updateGoalForm button:hover {
+  background-color: #0056b3;
+}
+
+#updateGoalForm button:active {
+  background-color: #003f8d;
+}
 
 
 
