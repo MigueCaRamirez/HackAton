@@ -1,5 +1,7 @@
 // Función para calcular las donaciones totales por organización
 function calculateDonationsByOrganization(donors, organizations) {
+    if (!donors || !organizations) return {};
+
     const donationData = {};
 
     donors.forEach(donor => {
@@ -50,17 +52,12 @@ function generatePieChart(donationData) {
     });
 }
 
-// Función para cargar la lista de donantes y organizaciones desde Local Storage
-function loadFromLocalStorage(key) {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : [];
-}
-
-// Inicializar gráfica al cargar el DOM
-document.addEventListener('DOMContentLoaded', () => {
-    const donorsList = loadFromLocalStorage("donorsList");
-    const organizations = loadFromLocalStorage("organizations");
-
+// Inicialización
+function initializeStats() {
+    const donorsList = JSON.parse(localStorage.getItem("donorsList")) || [];
+    const organizations = JSON.parse(localStorage.getItem("organizations")) || [];
     const donationData = calculateDonationsByOrganization(donorsList, organizations);
     generatePieChart(donationData);
-});
+}
+
+document.addEventListener('DOMContentLoaded', initializeStats);

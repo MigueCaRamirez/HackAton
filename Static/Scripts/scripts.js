@@ -23,23 +23,28 @@ let donorsList = JSON.parse(localStorage.getItem("donorsList")) || [];
 
 // Organizaciones (cargar desde Local Storage o inicializar por defecto)
 let organizations = JSON.parse(localStorage.getItem("organizations")) || [
-    { id: 1, name: "Fundación Esperanza", description: "Apoyo a comunidades vulnerables.", image: "Images/esperanza.jpg" },
-    { id: 2, name: "Ayuda Global", description: "Asistencia humanitaria en todo el mundo.", image: "Images/humani.jpg" },
-    { id: 3, name: "Red de Solidaridad", description: "Conexión de voluntarios con causas sociales.", image: "Images/red.jpg" },
+    { id: 1, name: "Fundación Esperanza", description: "Apoyo a comunidades vulnerables.", image: "Static/Images/esperanza.jpg" },
+    { id: 2, name: "Ayuda Global", description: "Asistencia humanitaria en todo el mundo.", image: "Static/Images/humani.jpg" },
+    { id: 3, name: "Red de Solidaridad", description: "Conexión de voluntarios con causas sociales.", image: "Static/Images/red.jpg" },
 ];
 
-// Función para guardar datos en Local Storage
+/** 
+ * Función para guardar datos en Local Storage
+ * @param {string} key - Clave de almacenamiento.
+ * @param {any} data - Datos a almacenar.
+ */
 function saveToLocalStorage(key, data) {
     localStorage.setItem(key, JSON.stringify(data));
 }
 
-// Mostrar formulario de inicio de sesión
+/**
+ * Mostrar/ocultar el formulario de inicio de sesión
+ */
 toggleAdminLogin.addEventListener("click", () => {
     donationSection.style.display = "none";
     adminLoginSection.style.display = "block";
 });
 
-// Botón para cancelar inicio de sesión
 cancelLoginButton.addEventListener("click", () => {
     donationSection.style.display = "block";
     adminLoginSection.style.display = "none";
@@ -47,7 +52,9 @@ cancelLoginButton.addEventListener("click", () => {
     adminPassword.value = "";
 });
 
-// Manejar inicio de sesión de administrador
+/**
+ * Manejar inicio de sesión de administrador
+ */
 adminLoginForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const username = adminUsername.value;
@@ -65,7 +72,9 @@ adminLoginForm.addEventListener("submit", (e) => {
     }
 });
 
-// Guardar donantes y organizaciones
+/** 
+ * Guardar listas en Local Storage
+ */
 function saveDonorsList() {
     saveToLocalStorage("donorsList", donorsList);
 }
@@ -73,7 +82,9 @@ function saveOrganizations() {
     saveToLocalStorage("organizations", organizations);
 }
 
-// Mostrar donantes en modo público
+/**
+ * Mostrar donantes en modo público
+ */
 function displayDonors() {
     donorsListContainer.innerHTML = "";
     donorsList.forEach(donor => {
@@ -88,7 +99,9 @@ function displayDonors() {
     });
 }
 
-// Mostrar donantes en el panel de administración
+/**
+ * Mostrar donantes en el panel de administración
+ */
 function displayAdminDonors() {
     adminDonorsList.innerHTML = "";
     donorsList.forEach((donor, index) => {
@@ -106,42 +119,20 @@ function displayAdminDonors() {
     });
 }
 
-// Mostrar organizaciones en el panel de administración
-function displayAdminOrganizations() {
-    adminOrganizationsList.innerHTML = "";
-    organizations.forEach((org, index) => {
-        const listItem = document.createElement("li");
-        listItem.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-        listItem.innerHTML = `
-            <span><strong>${org.name}</strong></span>
-            <div>
-                <button class="btn btn-warning btn-sm me-2" onclick="editOrganization(${index})">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteOrganization(${index})">Eliminar</button>
-            </div>
-        `;
-        adminOrganizationsList.appendChild(listItem);
-    });
-}
-
-// Mostrar lista de organizaciones en el formulario de donación
-function updateOrganizationOptions() {
-    const organizationSelect = document.getElementById("organization");
-    organizationSelect.innerHTML = "";
-    organizations.forEach(org => {
-        const option = document.createElement("option");
-        option.value = org.id;
-        option.textContent = org.name;
-        organizationSelect.appendChild(option);
-    });
-}
-
-// Subir imagen y actualizar la URL en el formulario
+/**
+ * Subir imagen al servidor
+ */
 document.getElementById("uploadImageForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const fileInput = document.getElementById("orgImageUpload");
     const formData = new FormData();
     formData.append("file", fileInput.files[0]);
+
+    if (!fileInput.files[0] || !fileInput.files[0].type.startsWith("image/")) {
+        alert("Por favor, selecciona una imagen válida.");
+        return;
+    }
 
     try {
         const response = await fetch("/upload_image", {
@@ -162,12 +153,19 @@ document.getElementById("uploadImageForm").addEventListener("submit", async (e) 
     }
 });
 
-// Agregar una nueva organización
+/**
+ * Agregar nueva organización
+ */
 addOrganizationForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const name = document.getElementById("orgName").value;
     const description = document.getElementById("orgDescription").value;
     const image = document.getElementById("orgImage").value;
+
+    if (!name || !description || !image) {
+        alert("Por favor completa todos los campos.");
+        return;
+    }
 
     const newOrganization = {
         id: Date.now(),
@@ -184,16 +182,21 @@ addOrganizationForm.addEventListener("submit", (e) => {
     alert("Organización agregada con éxito.");
 });
 
-// Inicialización
+/**
+ * Inicialización del sistema
+ */
 document.addEventListener("DOMContentLoaded", () => {
     updateOrganizationOptions();
     displayDonors();
+
     toggleDonorsList.addEventListener("click", () => {
         if (donorsListContainer.style.display === "none") {
             donorsListContainer.style.display = "block";
+            toggleDonorsList.textContent = "Ocultar Lista de Donantes";
             displayDonors();
         } else {
             donorsListContainer.style.display = "none";
+            toggleDonorsList.textContent = "Ver Lista de Donantes";
         }
     });
 });
