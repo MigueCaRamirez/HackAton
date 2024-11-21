@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, url_for
+from flask import Flask, render_template, request, jsonify, url_for, send_from_directory
 from db_connection import get_db_connection
 import cx_Oracle
 import os
@@ -9,6 +9,11 @@ UPLOAD_FOLDER = os.path.join(os.getcwd(), 'static', 'images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Máximo 16MB por archivo permitido
 
+# Ruta para servir archivos estáticos de forma explícita
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('static', filename)
+
 # Ruta para el formulario principal
 @app.route("/")
 def index():
@@ -17,7 +22,7 @@ def index():
 # Ruta para guardar un donante en la base de datos
 @app.route("/add_donor", methods=["POST"])
 def add_donor():
-    data = request.json  # Recibir datos desde el frontend
+    data = request.json
     try:
         connection = get_db_connection()
         cursor = connection.cursor()
@@ -65,8 +70,7 @@ def donation_stats():
         if connection:
             connection.close()
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
 
 @app.route('/upload_image', methods=['POST'])
 def upload_image():
@@ -86,6 +90,6 @@ def upload_image():
 @app.route('/organizations')
 def organizations():
     return render_template('Estaticadeorganizaciones.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
-

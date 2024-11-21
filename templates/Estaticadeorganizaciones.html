@@ -6,12 +6,15 @@
     <meta name="description" content="Plataforma de conexión entre donantes y organizaciones benéficas para facilitar la ayuda social">
     <meta name="keywords" content="donaciones, ayuda social, organizaciones benéficas, solidaridad">
     <title>DonaPro - Organizaciones Asociadas</title>
-    <link rel="icon" href="Static/Images/favicon.ico" type="image/x-icon">
+    
     <!-- Font Awesome para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="Static/Styless/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styless/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Styless/style2.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='Images/favicon.ico') }}">
+
 </head>
 <body>
     <!-- Navbar -->
@@ -24,7 +27,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav   ms-auto">
                     <li class="nav-item"><a class="nav-link" href="index.html">Donar</a></li>
                     <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
                 </ul>
