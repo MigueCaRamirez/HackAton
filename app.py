@@ -38,7 +38,7 @@ def send_email():
         <h2>Nueva donación registrada</h2>
         <p><strong>Nombre del donante:</strong> {donor_name}</p>
         <p><strong>Correo:</strong> {donor_email}</p>
-        <p><strong>Tipo de donación:</strong> {donation_type}</p>
+        
         <p><strong>Cantidad:</strong> ${donation_amount}</p>
         <p><strong>Organización:</strong> {organization}</p>
         <p><strong>Mensaje:</strong> {message}</p>

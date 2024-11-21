@@ -482,8 +482,3 @@ canvas#donationsChart {
 }
 
 /* ================== Responsive Adjustments ================== */
-@media (max-width: 768px) {
-  canvas#donationsChart {
-    max-width: 100%; /* Ocupa todo el ancho disponible en pantallas pequeñas */
-  }
-}
