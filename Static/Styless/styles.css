@@ -195,24 +195,6 @@ img {
   border-radius: 15px;
 
 }
-/* ================== Gráfica de Donaciones ================== */
-canvas#donationsChart {
-  max-width: 80%; /* Limita el ancho máximo al 80% del contenedor */
-  height: auto; /* Ajusta automáticamente la altura en proporción */
-  margin: auto; /* Centra la gráfica en su contenedor */
-  display: block;
-  padding: 20px;
-  border: 2px solid #007bff;
-  border-radius: 10px;
-  background-color: #ffffff;
-}
-
-/* ================== Responsive Adjustments ================== */
-@media (max-width: 768px) {
-  canvas#donationsChart {
-    max-width: 100%; /* Ocupa todo el ancho disponible en pantallas pequeñas */
-  }
-}
 
 #adminLoginSection .d-flex button {
   width: 48%;  
