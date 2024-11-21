@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Estadísticas de Donaciones">
+    <meta name="keywords" content="estadísticas, donaciones, gráfica, pastel">
+    <title>Estadísticas</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <link rel="stylesheet" href="Styless/styles.css">
+    <link rel="icon" href="Images/grafico-de-barras.ico" type="image/x-icon">
+</head>
+<body>
+    
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Donar</a></li>
+                <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
+            </ul>
+            <!-- Interruptor de Modo Oscuro -->
+           
+            
+        </div>
+    </nav>
+
+
+    <!-- Header -->
+    <header class="hero-section text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Estadísticas de Donaciones</h1>
+            <p class="lead">Conoce la distribución del dinero donado entre las organizaciones</p>
+        </div>
+    </header>
+
+    <!-- Gráfica de Donaciones -->
+    <main class="container my-5">
+        <div class="container my-5">
+            <h2 class="text-center mb-4">Distribución de Donaciones</h2>
+            <canvas id="donationsChart" width="400" height="400"></canvas>
+        </div>
+        <div class="container my-4 text-center">
+            <h3>Total Donado:</h3>
+            <p id="totalDonado" class="fs-4 fw-bold">$0</p>
+        </div>
+        <div class="text-center my-4">
+            <button id="exportPDF" class="btn btn-primary">Exportar a PDF</button>
+            <button id="exportCSV" class="btn btn-secondary">Exportar a CSV</button>
+        </div>
+        
+        <section id="topDonantes" class="my-5">
+            <h2 class="text-center mb-4">Top Donantes</h2>
+            <div class="table-responsive">
+                <table id="donorsTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Cantidad Donada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Los datos serán llenados dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Sobre Nosotros</h5>
+                    <p>Conectamos donantes con organizaciones para maximizar el impacto social.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contacto</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope"></i> miguel.canate.ramirez012@gmail.com</li>
+                        <li><i class="fas fa-phone"></i> +57 324 401 6942</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Cesar, Colombia</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2024 Donando Vida. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Scripts -->
+    <script>
+        // Exportar a PDF
+        document.getElementById('exportPDF').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+    
+            doc.text("Estadísticas de Donaciones", 10, 10);
+            doc.text("Distribución de Donaciones", 10, 20);
+    
+            // Capturar el gráfico como imagen
+            const canvas = document.getElementById('donationsChart');
+            const imageData = canvas.toDataURL('image/png');
+            doc.addImage(imageData, 'PNG', 10, 30, 180, 100);
+    
+            doc.save('estadisticas.pdf');
+        });
+    
+        // Exportar a CSV
+        document.getElementById('exportCSV').addEventListener('click', () => {
+            
+    
+            let csvContent = "data:text/csv;charset=utf-8,";
+            data.forEach(row => {
+                csvContent += row.join(",") + "\n";
+            });
+    
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "estadisticas.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Recuperar la lista de donantes desde el LocalStorage
+        let donors = JSON.parse(localStorage.getItem('donorsList')) || [
+            { name: "Juan Pérez", email: "juan@example.com", amount: 1000 },
+            { name: "María López", email: "maria@example.com", amount: 800 },
+            { name: "Carlos Gómez", email: "carlos@example.com", amount: 700 },
+            { name: "Ana Torres", email: "ana@example.com", amount: 600 },
+            { name: "Luis Martínez", email: "luis@example.com", amount: 500 },
+        ];
+
+        // Referencia al cuerpo de la tabla
+        const tbody = document.querySelector("#donorsTable tbody");
+
+        // Llenar la tabla con los datos de los donantes
+        donors.forEach((donor, index) => {
+            const row = `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${donor.name}</td>
+                    <td>${donor.email}</td>
+                    <td>$${donor.amount}</td>
+                </tr>`;
+            tbody.innerHTML += row;
+        });
+
+        // Inicializar DataTable
+        $('#donorsTable').DataTable();
+    });
+</script>
+
+
+
+
+<script>
+    const toggleSwitch = document.getElementById('darkModeSwitch');
+    toggleSwitch.addEventListener('change', function () {
+        if (this.checked) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    });
+</script>
+
+
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+ 
+    <script src="Scripts/stats.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+   
+   
+   
+</body>
+</html>
