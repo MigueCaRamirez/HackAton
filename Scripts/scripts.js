@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Inicializar DataTable
+    //NO TOCAR
     const table = $('#donorsTable').DataTable();
 
     // Lista de donantes (inicializa desde LocalStorage o vacío)
