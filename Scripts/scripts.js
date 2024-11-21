@@ -82,6 +82,52 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const organizationWrapper = document.getElementById("organizationWrapper");
+    
+        // Función para cargar las organizaciones desde el archivo JSON
+        async function loadOrganizations() {
+            try {
+                const response = await fetch("organizations.json");
+                if (!response.ok) {
+                    throw new Error("Error al cargar las organizaciones");
+                }
+                const organizations = await response.json();
+    
+                // Renderizar las organizaciones en el HTML
+                renderOrganizations(organizations);
+            } catch (error) {
+                console.error("Error al cargar las organizaciones:", error);
+            }
+        }
+    
+        // Función para renderizar las organizaciones en el HTML
+        function renderOrganizations(organizations) {
+            organizationWrapper.innerHTML = ""; // Limpiar contenido previo
+    
+            organizations.forEach((org) => {
+                const col = document.createElement("div");
+                col.classList.add("col-md-4", "mb-4");
+    
+                col.innerHTML = `
+                    <div class="card shadow">
+                        <img src="${org.image}" class="card-img-top" alt="${org.name}">
+                        <div class="card-body">
+                            <h5 class="card-title">${org.name}</h5>
+                            <p class="card-text">${org.description}</p>
+                            <p><strong>Ubicación:</strong> (${org.lat}, ${org.lng})</p>
+                        </div>
+                    </div>
+                `;
+    
+                organizationWrapper.appendChild(col);
+            });
+        }
+    
+        // Llamar a la función para cargar las organizaciones
+        loadOrganizations();
+    });
+    
     // Manejar el formulario de donación
     donationForm.addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -216,3 +262,200 @@ document.addEventListener('DOMContentLoaded', function () {
         adminPassword.value = "";
     });
 });
+
+// Actualizar las opciones del formulario de donación
+function updateOrganizationOptions(organizations) {
+    const organizationSelect = document.getElementById("organization");
+    organizationSelect.innerHTML = "";
+    organizations.forEach(org => {
+        const option = document.createElement("option");
+        option.value = org.id;
+        option.textContent = org.name;
+        organizationSelect.appendChild(option);
+    });
+}
+
+// Actualizar organizaciones desde el backend y reflejarlas en el mapa y en las opciones
+async function loadOrganizations() {
+    try {
+        const response = await fetch('/organizations');
+        const organizations = await response.json();
+
+        const organizationSelect = document.getElementById("organization");
+        organizationSelect.innerHTML = '<option value="">Selecciona una organización</option>';
+
+        const adminOrganizationsList = document.getElementById("adminOrganizationsList");
+        adminOrganizationsList.innerHTML = '';
+
+        organizations.forEach(org => {
+            // Agregar al formulario de donación
+            const option = document.createElement("option");
+            option.value = org.id;
+            option.textContent = org.name;
+            organizationSelect.appendChild(option);
+
+            // Agregar al panel de administración
+            const orgItem = document.createElement("li");
+            orgItem.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+            orgItem.innerHTML = `
+                <span><strong>${org.name}</strong></span>
+                <div>
+                    <button class="btn btn-warning btn-sm me-2" onclick="editOrganization('${org.id}')">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteOrganization('${org.id}')">Eliminar</button>
+                </div>
+            `;
+            adminOrganizationsList.appendChild(orgItem);
+        });
+    } catch (error) {
+        console.error("Error al cargar las organizaciones:", error);
+    }
+}
+
+
+// Actualizar la lista de organizaciones en Estaticadeorganizaciones.html
+function updateOrganizationsPage(organizations) {
+    if (window.location.pathname.includes("Estaticadeorganizaciones.html")) {
+        const container = document.getElementById("organizationContainer");
+        container.innerHTML = ""; // Limpiar contenido anterior
+        organizations.forEach(org => {
+            const fieldset = document.createElement("fieldset");
+            fieldset.classList.add("organization-fieldset");
+            fieldset.innerHTML = `
+                <legend>${org.name}</legend>
+                <img src="${org.image}" alt="${org.name}" class="organization-image">
+                <p>${org.description}</p>
+                <p><strong>Ubicación:</strong> ${org.location.lat}, ${org.location.lng}</p>
+            `;
+            container.appendChild(fieldset);
+        });
+    }
+}
+
+// Actualizar marcadores en el mapa de Leaflet
+function updateMapMarkers(organizations) {
+    const map = L.map('map').setView([4.570868, -74.297333], 6); // Coordenadas iniciales
+
+    // Capa del mapa
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    organizations.forEach(org => {
+        L.marker([org.location.lat, org.location.lng]).addTo(map)
+            .bindPopup(`<strong>${org.name}</strong>`)
+            .openPopup();
+    });
+}
+
+// Agregar nueva organización con ubicación
+document.getElementById("addOrganizationForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("orgName").value;
+    const description = document.getElementById("orgDescription").value;
+    const lat = parseFloat(document.getElementById("orgLat").value);
+    const lng = parseFloat(document.getElementById("orgLng").value);
+    const fileInput = document.getElementById("orgImageUpload").files[0];
+
+    const formData = new FormData();
+    formData.append("file", fileInput);
+
+    try {
+        // Subir imagen
+        const uploadResponse = await fetch("/upload_image", { method: "POST", body: formData });
+        const uploadResult = await uploadResponse.json();
+
+        if (uploadResponse.ok) {
+            const newOrg = { 
+                name, 
+                description, 
+                image: uploadResult.image_url, 
+                location: { lat, lng } 
+            };
+
+            // Enviar la nueva organización al backend
+            const response = await fetch('/organizations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newOrg)
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            loadOrganizations(); // Recargar organizaciones
+        } else {
+            alert(uploadResult.error || "Error al subir la imagen.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error al conectar con el servidor.");
+    }
+});
+async function editOrganization(orgId) {
+    const name = prompt("Nuevo nombre:");
+    const description = prompt("Nueva descripción:");
+    const lat = parseFloat(prompt("Nueva latitud:"));
+    const lng = parseFloat(prompt("Nueva longitud:"));
+
+    if (!name || !description || isNaN(lat) || isNaN(lng)) {
+        alert("Por favor, completa todos los campos correctamente.");
+        return;
+    }
+
+    try {
+        const response = await fetch(`/organizations/${orgId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, description, location: { lat, lng } })
+        });
+
+        const result = await response.json();
+        alert(result.message);
+        loadOrganizations();
+    } catch (error) {
+        console.error("Error al editar la organización:", error);
+    }
+}
+
+async function deleteOrganization(orgId) {
+    if (!confirm("¿Estás seguro de eliminar esta organización?")) return;
+
+    try {
+        const response = await fetch(`/organizations/${orgId}`, { method: 'DELETE' });
+        const result = await response.json();
+        alert(result.message);
+        loadOrganizations();
+    } catch (error) {
+        console.error("Error al eliminar la organización:", error);
+    }
+}
+document.addEventListener("DOMContentLoaded", function () {
+    // Inicializar el mapa centrado en una ubicación por defecto
+    const map = L.map("map").setView([4.570868, -74.297333], 6); // Coordenadas iniciales (Colombia)
+
+    // Cargar capa del mapa
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+    }).addTo(map);
+
+    // Agregar un marcador arrastrable al mapa
+    let marker = L.marker([4.570868, -74.297333], { draggable: true }).addTo(map);
+
+    // Actualizar los campos de latitud y longitud cuando el marcador se mueva
+    marker.on("dragend", function (event) {
+        const position = marker.getLatLng();
+        document.getElementById("orgLat").value = position.lat.toFixed(6);
+        document.getElementById("orgLng").value = position.lng.toFixed(6);
+    });
+
+    // Permitir al usuario hacer clic en el mapa para mover el marcador
+    map.on("click", function (event) {
+        const { lat, lng } = event.latlng;
+        marker.setLatLng([lat, lng]);
+        document.getElementById("orgLat").value = lat.toFixed(6);
+        document.getElementById("orgLng").value = lng.toFixed(6);
+    });
+});
+
+
+
+

@@ -12,9 +12,10 @@
     <link rel="icon" href="Images/favicon.ico" type="image/x-icon">
 </head>
 <body>
+    <!-- Barra de navegación -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="#donar"><i class="fas fa-hand-holding-heart"></i> Donando vida</a>
+            <a class="navbar-brand" href="#"><i class="fas fa-hand-holding-heart"></i> Donando Vida</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -23,26 +24,25 @@
                     <li class="nav-item"><a class="nav-link" href="#donar">Donar</a></li>
                     <li class="nav-item"><a class="nav-link" href="Stats.html">Estadísticas</a></li>
                     <li class="nav-item"><a class="nav-link" href="Estaticadeorganizaciones.html">Organizaciones asociadas</a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html">ingresar</a></li> 
+                    <li class="nav-item"><a class="nav-link" href="login.html">Ingresar</a></li>
                 </ul>
             </div>
-            
         </div>
     </nav>
 
-    <!-- Login Section -->
-    <main class="container my-5">
-        <h1 class="text-center mb-4">Inicio de Sesión</h1>
-        <div class="row">
-            <div class="col-md-6 mx-auto">
-                <form id="loginForm" class="shadow p-4 rounded">
+    <!-- Sección de Inicio de Sesión -->
+    <div class="container d-flex align-items-center justify-content-center vh-100">
+        <div class="card shadow" style="width: 22rem;">
+            <div class="card-body">
+                <h3 class="card-title text-center mb-4">Inicio de Sesión</h3>
+                <form id="loginForm">
                     <div class="mb-3">
                         <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" id="email" class="form-control" required>
+                        <input type="email" class="form-control" id="email" placeholder="Ingrese su correo" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" id="password" class="form-control" required>
+                        <input type="password" class="form-control" id="password" placeholder="Ingrese su contraseña" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
                 </form>
@@ -51,7 +51,9 @@
                 </p>
             </div>
         </div>
-    </main>
+    </div>
+
+    <!-- Script de lógica para el formulario -->
     <script>
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -72,5 +74,8 @@
             }
         });
     </script>
+    
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

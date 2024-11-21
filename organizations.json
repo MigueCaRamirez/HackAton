@@ -1,0 +1,24 @@
+[
+    {
+      "id": "org1",
+      "name": "Fundación Esperanza",
+      "description": "Apoyo a comunidades vulnerables.",
+      "image": "Images/esperanza.jpg",
+      "location": { "lat": 4.60971, "lng": -74.08175 }
+    },
+    {
+      "id": "org2",
+      "name": "Ayuda Global",
+      "description": "Asistencia humanitaria en todo el mundo.",
+      "image": "Images/humani.jpg",
+      "location": { "lat": 6.2442, "lng": -75.5812 }
+    },
+    {
+      "id": "org3",
+      "name": "Red de Solidaridad",
+      "description": "Conexión de voluntarios con causas sociales.",
+      "image": "Images/red.jpg",
+      "location": { "lat": 3.43722, "lng": -76.5225 }
+    }
+  ]
+  

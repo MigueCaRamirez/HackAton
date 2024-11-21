@@ -1,11 +1,89 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import json
+import os
 
 app = Flask(__name__)
 CORS(app)  # Permitir solicitudes desde el frontend
+
+# Ruta al archivo JSON
+ORG_FILE = os.path.join(os.getcwd(), 'organizations.json')
+
+# Leer organizaciones del archivo JSON
+def read_organizations():
+    if os.path.exists(ORG_FILE):
+        with open(ORG_FILE, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    return []
+
+# Escribir organizaciones al archivo JSON
+def write_organizations(organizations):
+    with open(ORG_FILE, 'w', encoding='utf-8') as file:
+        json.dump(organizations, file, indent=4, ensure_ascii=False)
+
+
+# Ruta para agregar una nueva organización
+@app.route('/organizations', methods=['POST'])
+def add_organization():
+    data = request.json
+    organizations = read_organizations()
+
+    # Nueva organización con ubicación
+    new_org = {
+        "id": f"org{len(organizations) + 1}",
+        "name": data["name"],
+        "description": data["description"],
+        "image": data["image"],
+        "location": {
+            "lat": data["location"]["lat"],
+            "lng": data["location"]["lng"]
+        }
+    }
+
+    organizations.append(new_org)
+    write_organizations(organizations)
+    return jsonify({"message": "Organización agregada con éxito."})
+
+# Ruta para obtener todas las organizaciones
+@app.route('/organizations', methods=['GET'])
+def get_organizations():
+    organizations = read_organizations()
+    return jsonify(organizations)
+
+# Ruta para actualizar una organización existente
+@app.route('/organizations/<org_id>', methods=['PUT'])
+def update_organization(org_id):
+    data = request.json
+    organizations = read_organizations()
+
+    for org in organizations:
+        if org["id"] == org_id:
+            org["name"] = data.get("name", org["name"])
+            org["description"] = data.get("description", org["description"])
+            org["image"] = data.get("image", org["image"])
+            org["location"] = data.get("location", org["location"])
+            break
+    else:
+        return jsonify({"error": "Organización no encontrada"}), 404
+
+    write_organizations(organizations)
+    return jsonify({"message": "Organización actualizada con éxito."})
+
+# Ruta para eliminar una organización
+@app.route('/organizations/<org_id>', methods=['DELETE'])
+def delete_organization(org_id):
+    organizations = read_organizations()
+    organizations = [org for org in organizations if org["id"] != org_id]
+
+    write_organizations(organizations)
+    return jsonify({"message": "Organización eliminada con éxito."})
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 # Configuración del servidor SMTP
 SMTP_SERVER = "smtp.gmail.com"

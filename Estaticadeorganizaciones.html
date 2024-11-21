@@ -72,24 +72,12 @@
             </div>
         </section>
 
-        <fieldset class="organization-fieldset" id="fieldset1">
-            <legend>Fundación Esperanza</legend>
-            <img src="Images/esperanza.jpg" alt="Fundación Esperanza" class="organization-image">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex odit, enim ullam facilis eos asperiores nam! Rerum eos ullam unde soluta id saepe ut perferendis, aperiam voluptatem non fugiat.</p>
-        </fieldset>
-
-        <fieldset class="organization-fieldset" id="fieldset2">
-            <legend>Ayuda Global</legend>
-            <img src="Images/humani.jpg" alt="Ayuda Global" class="organization-image">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex odit, enim ullam facilis eos asperiores nam! Rerum eos ullam unde soluta id saepe ut perferendis, aperiam voluptatem non fugiat.</p>
-        </fieldset>
-
-        <fieldset class="organization-fieldset">
-            <legend>Red de Solidaridad</legend>
-            <img src="Images/red.jpg" alt="Red de Solidaridad" class="organization-image">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ex odit, enim ullam facilis eos asperiores nam! Rerum eos ullam unde soluta id saepe ut perferendis, aperiam voluptatem non fugiat.</p>
-        </fieldset>
-
+       <!-- Organizaciones Asociadas -->
+    <main class="container my-5">
+        <div id="organizationWrapper" class="row">
+            <!-- Aquí se cargarán las organizaciones dinámicamente -->
+        </div>
+    </main>
         <section id="galeria" class="my-5">
             <h2 class="text-center mb-4">Galería de Proyectos</h2>
             <div class="row g-3">
@@ -184,6 +172,7 @@
             { name: "Fundación Esperanza", lat: 4.60971, lng: -74.08175 },
             { name: "Ayuda Global", lat: 6.2442, lng: -75.5812 },
             { name: "Red de Solidaridad", lat: 3.43722, lng: -76.5225 }
+
         ];
     
         organizations.forEach(org => {
