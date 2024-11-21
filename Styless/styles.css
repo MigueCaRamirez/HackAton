@@ -571,3 +571,9 @@ canvas#donationsChart {
 }
 
 /* ================== Responsive Adjustments ================== */
+
+
+#shareSection button {
+    margin: 5px;
+    font-size: 16px;
+}

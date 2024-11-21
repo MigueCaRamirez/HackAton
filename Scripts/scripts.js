@@ -270,3 +270,5 @@ document.addEventListener('DOMContentLoaded', function () {
     // Actualizar las barras de progreso al inicio
     updateProgressBars();
 });
+
+
