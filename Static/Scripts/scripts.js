@@ -23,9 +23,9 @@ let donorsList = JSON.parse(localStorage.getItem("donorsList")) || [];
 
 // Organizaciones (cargar desde Local Storage o inicializar por defecto)
 let organizations = JSON.parse(localStorage.getItem("organizations")) || [
-    { id: 1, name: "Fundación Esperanza", description: "Apoyo a comunidades vulnerables.", image: "Static/Images/esperanza.jpg" },
-    { id: 2, name: "Ayuda Global", description: "Asistencia humanitaria en todo el mundo.", image: "Static/Images/humani.jpg" },
-    { id: 3, name: "Red de Solidaridad", description: "Conexión de voluntarios con causas sociales.", image: "Static/Images/red.jpg" },
+    { id: 1, name: "Fundación Esperanza", description: "Apoyo a comunidades vulnerables.", image: "../static/Images/esperanza.jpg" },
+    { id: 2, name: "Ayuda Global", description: "Asistencia humanitaria en todo el mundo.", image: "../tatic/Images/humani.jpg" },
+    { id: 3, name: "Red de Solidaridad", description: "Conexión de voluntarios con causas sociales.", image: "../static/Images/red.jpg" },
 ];
 
 /** 
@@ -153,6 +153,89 @@ document.getElementById("uploadImageForm").addEventListener("submit", async (e) 
     }
 });
 
+// Mostrar organizaciones en el panel de administración
+function displayAdminOrganizations() {
+    const adminOrganizationsList = document.getElementById("adminOrganizationsList");
+    adminOrganizationsList.innerHTML = ""; // Limpia la lista antes de mostrar
+
+    organizations.forEach((org, index) => {
+        const orgItem = document.createElement("li");
+        orgItem.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+        orgItem.innerHTML = `
+            <span><strong>${org.name}</strong></span>
+            <div>
+                <button class="btn btn-warning btn-sm me-2" onclick="editOrganization(${index})">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="deleteOrganization(${index})">Eliminar</button>
+            </div>
+        `;
+        adminOrganizationsList.appendChild(orgItem);
+    });
+}
+
+// Agregar nueva organización
+document.getElementById("addOrganizationForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("orgName").value;
+    const description = document.getElementById("orgDescription").value;
+    const fileInput = document.getElementById("orgImageUpload").files[0];
+
+    const formData = new FormData();
+    formData.append("file", fileInput);
+
+    try {
+        const response = await fetch("/upload_image", {
+            method: "POST",
+            body: formData,
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            const newOrganization = {
+                id: Date.now(),
+                name,
+                description,
+                image: result.image_url,
+            };
+
+            organizations.push(newOrganization);
+            saveOrganizations();
+            displayAdminOrganizations();
+            alert("Organización agregada con éxito.");
+            e.target.reset();
+        } else {
+            alert(result.error || "Error al subir la imagen.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error al conectar con el servidor.");
+    }
+});
+
+// Editar una organización
+function editOrganization(index) {
+    const org = organizations[index];
+    const newName = prompt("Editar nombre:", org.name);
+    const newDescription = prompt("Editar descripción:", org.description);
+
+    if (newName && newDescription) {
+        organizations[index] = { ...org, name: newName, description: newDescription };
+        saveOrganizations();
+        displayAdminOrganizations();
+        alert("Organización actualizada con éxito.");
+    }
+}
+
+// Eliminar una organización
+function deleteOrganization(index) {
+    if (confirm("¿Estás seguro de eliminar esta organización?")) {
+        organizations.splice(index, 1);
+        saveOrganizations();
+        displayAdminOrganizations();
+        alert("Organización eliminada con éxito.");
+    }
+}
+
+
 /**
  * Agregar nueva organización
  */
@@ -199,4 +282,16 @@ document.addEventListener("DOMContentLoaded", () => {
             toggleDonorsList.textContent = "Ver Lista de Donantes";
         }
     });
+});
+
+// Manejar el botón de "Cerrar Sesión"
+document.getElementById("logoutAdmin").addEventListener("click", () => {
+    document.getElementById("adminPanelSection").style.display = "none";
+    document.getElementById("donationSection").style.display = "block";
+
+
+    // Si hay datos en los campos de inicio de sesión, límpialos
+    document.getElementById("adminUsername").value = "";
+    document.getElementById("adminPassword").value = "";
+    alert("Sesión cerrada con éxito");
 });
